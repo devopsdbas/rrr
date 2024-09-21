@@ -1,0 +1,3707 @@
+Docker: dockerhub.io
+hub.docker.com -> it provides only one private repo for personal use  and public for any
+->get yaml files from kubernetes.io
+
+-------------------------------------
+need to know difference b/w apply/create/ ---> used for .yaml files
+                               deploy used for creation of \
+							   exec used ot get teh command line 
+ ----------------------------------------
+Minikube: Pnly used for the development purpose.
+Kubeadm: On premise & used in production.
+Kind: Sam as minikube but we can use multi node cluster
+Versions:
+v1 and policy/v1 are stable versions
+Apha -> development stage
+Beta -> workning stage
+
+If we want to access the Kubectl TLS certificate available in .kube/config file ********
+
+->Basically all pods will be available in private Load Balancer(LB) from here all users and other clients able to access.
+-> Port Forwarding  is the concept where we can directly connect to the pod without going to the LB or any other Jump server.
+
+In K8's standard user id: 1000
+In docker we use only user no user id(UID)
+
+The CPU/RAM limitations all managed by Kube-Scheduler in MAster node .
+The resources we are able to convert only on deployments and containers not on PODS
+
+Pause container: runs in background whenver we deploy pod, it will be created first
+
+*****Users connections to application through  n/w services::
+      Node n/w->clsuter n/w ->pod n/w->application	
+
+***configmap and secrests will sit ouside the deployments.	  
+ 
+====================================
+Access:
+
+In kubernetes, only role based access cab be controlled fot teh users
+
+In Aes: , IAM->SSO-> user access
+==============================================
+->Docker is used to create Images in K8's.
+->Docker is a containerized platform
+->In Kubernetes, we call Docker as CONTAINER's or POD's.		
+Container used in docker
+PODMAN used in redhat
+
+In Glance:
+
+	OVERALL for K8's in docker below components will be used
+     1. DOckerfile
+     2. Docekr Images
+     3. Docekr commands	
+
+ 3 types of deployments:
+  Daemonset
+  deployment
+  Statefulset
+-----------------------------------------------Architecture completed----------------------------------------------------------- 
+ what are Microservies?
+ Its an old concept called SOA(service oriented Architecture)
+ 
+ Its an monolithic application where all applications bounded in one bucket, if something goes wrong all applications will go off
+ 
+ TO overcome this Docker has introduced Microservices where the applications are places seperately i.e the application is independent 
+ 1 application -> 1server
+ 
+ 
+ Clent-Server Architecture:
+ --------------------------
+ Components involved where we using docer in client & server.
+ 
+ In server Docker Daemon shows as DOCKER D
+ 
+ any communication need to be done from user or CLI first to goes and hit REST API then DOCKER DAEMON
+ CLIENT-> DOCKER API -> DOCKER D
+ we can invoke commands from client to REST API/CLI to server of DOCKER D
+ 
+ Server         							         	CLIENT
+ -----------------------------------------              -----------------
+ | Docker Host           Registry        |	         	| docker build  |
+ | -----------------   -----------       |     REST     | docker pull   |
+ | | Docker Daemon |   | UBUNTU  |       |     API      | docker run    |
+ | | Container     |   | CENTOS  |       |              |               |
+ | | Images        |   | NGINX   |       |              |               |
+ | -----------------   ----------        |              |               |
+ -----------------------------------------	         	-----------------
+ CLIENT:
+ ->through commands we get access to the server, where we manage the docker server
+ to connect to the the server the client should be installed .
+ 
+->what ever the commands we fire from CLIENT it goes to DOCKER DAEMON then to the image(where if can pull,build.run)
+->we give give pull from CLIENT it goes to DAEMON TO REGISTRY and pull the required image and put in the server
+->If it want to talk to CONTAINER here also DOCKER DAEMON will interact
+
+DOCKER DAEMON(DOCKER D) :
+
+So overall DOCKER DAEMON(DOCKER D) plays a key role and what ever the commands come from client 
+DOCKER DAEMON manages all the services.
+
+DOCKER DAEMON(DOCKER D) also is an API , that means what ever the communication happens , it happens throgu API or CLIENT.
+
+DOCKER HOST:
+
+It invloves Docker Daemon ,Container, Images, n/w, storage.
+-----------------------------------------------------------------------------------------------------
+
+IMAGES: 
+
+->Its a binary template to create containers
+->It provide all the metadata about containers functionality and also containers requirements
+
+-----------------------------------------------------------------------------------------------------
+Registry:
+
+Its repository store teh docker images.
+1. private containers registry -> we can create our own private registry or use dockerhub private registry
+2. Public containers registry
+
+cloud wise container registry: 
+ACR -> Azure container registry
+ECR -> Amazon container	registry
+ICR -> IBM
+GCR -> Google
+
+----------------------------------------------------------------------------------------------------------
+CONTAINER:
+
+-> its an environment where applications run, within container we have n/w, storage
+->  for any new image creation, based on the image only container will be created
+----------------------------------------------------------------------------------------------------------
+Docker Networks:
+
+-> It has different type of drivers, to connect/talk b/w the containers 
+   1. Bridge drivers --->>it  a default n/w driver
+   2. HOst drivers
+   3. overlay drivers
+   4. NONE 
+   5. MACVLAN -->>based on the MAC address it will connect
+----------------------------------------------------------------------------------------------------------
+Storage:
+
+->Images will be in layered format and in this top layer will be WRITABLE LAYER where we can store the data
+ types:  for persistent data
+      1. data volumes
+	  2. volume container
+	  3. storage plugin ->we can add external storages
+	  4. directory mount
+	  
+-----------------------------------------------Architecture completed-----------------------------------------------------------
+
+
+DOCKER ENGIENE:
+
+-> It will be on server, to create a container or to run container we need a component i.e docekr components for which DOCKER ENGIENE used.
+
+COMPONENTS:
+ 
+	  ------------DOCKER ENGIENE(SERVER)------------------
+	  |                 	                             |
+      | -----------------   ----------- -----------      |  
+      | | Docker Daemon |   | REST API| |CLI      |      |  
+      | |               |   |         | |         |      |  
+      | |               |   |         | |         |      |  
+      | -----------------   ----------  ----------       |  
+      ---------------------------------------------------	
+
+Docker ENGIENE is notheing but the Docker Daemon where it take the command from CLI ->REST API-> DOCKER DAEMON
+
+DOCER D: A process manages all services
+CLI: Client side component where CLI connects to server/Docker host/Docker ENGIENE
+API: which acts as interface b/w client to the DOCker Daemon
+
+client:
+
+    ------------------ 
+    |CLI             |
+	|(DockercCLI)    |
+    | |              |
+    |REST API        |
+    | |              |
+    |Docker Daemon   |
+    | (SERVER)       |
+	------------------
+below will be managed by using Docker client	
+	controlles images
+	Container
+	n/w, data volumes
+---------------------------------------------------------------------------------------------------------------------
+Docker versions:
+1. EE(enterprise Edition) -> it has verified Images where we get support (17.0.6) so we ahve thise version for 1 year from docker, so we can upgrade for every 1 year
+    i. Basic 
+	ii.Standard -->>Role based LDAP
+	iii.Advance -->security scan 
+2. CE(Community Edition)
+    IT has 2 versions:
+	i.Stable versions->Quaterly release
+	ii.Edge versions ->Montly release(Once all bugs are rectified it moves to stable version) after 3 releases. (current:17.0.3,1M-0.4,2M-0.5,3M-0.6)
+	                   so 17.0.6 will be released to stable version and same for EE
+					   
+	OVERALL for K8's in docker below components will be used
+     1. DOckerfile
+     2. Docekr Images
+     3. Docekr commands	 
+	
+-------------------------------------------------------------------------------------------
+
+DOCKER CONTAINERS | IMAGES | COMMANDS:
+
+CONTAINER:
+Nothing but linux because we using 
+ i. NAMESPACES -> Isolating  the system components like n/w,files, users,process,IPC's
+ ii. CGroups -> where limiting the resources allocation like CPU, RAM ..
+ 
+Container runtime:
+Docker, LXC, RunC, CRI-o, container D are the runtimes whihc are standardized container.
+OCI(Open Container Initiative) whihc are defined as standard containerized formats.
+
+----------------------------------------------------------------------------------------------------------
+Docker container creation:
+
+-> To create a container, when we fire a command in docker, it will check  for  the image.
+   If the desired image is not available it will check in registry.
+   Docker ->(ubuntu)-> registry ->creates a container
+   
+-> Image is formed in layers
+   Docker Run -->Image Layer ->Runtime construct(writable layer)  		
+	
+    Writable LAYER: DE will creates on top of container
+	                If we kill the container, the writable layer will be deleted , so it is non-persistent data
+					If we create a new image the writable layer creates a  new data which acts as persistent untill we delete the image.
+
+To create an Image, we ahve 2 options.
+  i. Docer commit : which is not recommended (Eg:yum install ...commit) ->after commit this can be moved to any location
+                   Eg; $yum install -y 
+                       $yum install -y nginx
+        instead of running above in 2 different lines, club them and execute in 1 line through whihc we avoid the multi layer  
+		
+		               $yum install -y && \
+					   
+  ii. Dockerfile :neeed to give the instructions how to create a image i.e need to mention the all possible parameters
+                  And we need ot make sure it has less layers.
+				  
+              docker build        docker push                  docker pull 
+   Dockerfile ------------->Image ------------> Image registry ------------> Image(push to k8's)
+                            (Local) 											|
+								|												|
+								--------------------------------------------->Docker Run
+								
+	   -> dockerfile is standard command or we can use 
+	                         $docker build or $my-dockerfile
+							 $docker build. -f my-dockerfile
+							 
+							 
+COMMANDS:
+
+$docker images -> shows the created images 
+$docker ps -a
+$docker ps -q
+$docker run ->its old command whihc is deprecated
+$docker container run <container name> echo "hello"  -> it echo the name and ends
+$docker container run -i --name <name fo container> ubuntu -> 'i' is interactive mode , where we can type the commands in the terminal
+$docker container run -it --name <name fo container> ubuntu -> 'it' interactive terminal mode where we shift from $ to #
+$docker container run -dit --name <name fo container> ubuntu ->dettached mode , whihc runs in background
+$docker exec -it <name fo container> bach/nbash/shell ->If we want to login to container where we attch any shell or bash
+    #hostname
+	#exit
+$docker exec -t <name fo container> hostname /df -h -> we can use any command during the conta creation 
+							                 ------
+$docker stop <name of container> -> to stop the container
+       $docker container ps or ps -a
+$docker run u3 ->removes the containers
+$docker container ps -aq  -> to check only container id's
+$docker container ps -aq | xargs docker run --> removes every container
+$docker container run --rm -it --name ttt ubuntu bash --> it prompts below # lines in terminal (root)
+       #df - h
+       #hostname
+       #exit	   
+$docker container inspect <container id/name> --> gives the list of CPU,RAM,Statistics at system level
+$docker logs ->shows the container logs
+$docker run -d -p 19.16.1.0/:8006 nginx -> to expose the container	  
+$curl 192.168.0.1 --> we can the exposed app in command line & utility to manage API's tp check  web browsers
+$docker kill <C name> -> kills the container but its not recommended to run , instead use stop
+$docker container prune -> removes all stopped containers
+
+IMAGE COMMANDS:
+$docker image ls or docker images 
+$docker image inspect
+$docker image rm <image id>
+$docker image history <repository>
+=================================================================================================================
+Difference b/w CMD and Entrypoint:
+
+CMD: whatever we assigins in the image script that will work by default.
+Entrypoint:
+
+------------------------------------------
+vi dockerfile
+FROM ubuntu:latest
+RUN \
+  apt-get ubuntu:latest
+  apt-get install -y net-tools && \
+  apt-get install -y iputils-ping && \
+  apt install -y curl
+WORKDIR /etc
+CMD["bash"]  
+ENTRYPOINT ["ping"]
+
+-------------------------------------------
+using above dockerfile we can see how the prmopts($/#) will respond
+
+$docker image build -t ubuntu_tools:v1 -> it builds dockerfile image
+$docker container run ubuntu_tools:v1
+$docker ps -about
+$docker container run ubuntu_tools:v1 df -h
+                                      -----
+									  hostname
+
+change CMD["ping"]
+$docker container run ubuntu_tools:v1
+$docker images  -->here ubuntu ping will be created
+$docker container run ubuntu_tools:v1 <destination ip add> -> it should ping the ip add
+
+If we want to change the Entrypoint during the docker run 
+$docker container run --entrypoint="df" ubuntu_ping:v3
+=================================================================================================================
+
+Docker Engiene Components:
+
+-> to limit the kernel parameters like CPU or Memory
+
+$docker container run -dit --name ubuntu_limit or newlimts --cpus=".25" --memory=100m ubuntu
+$docker container inspect 4ebb |grep -i nanocups/memory -> to chekc cpu or memory
+
+STORAGE IN DOCKER:
+
+/var/lib/docker/
+/var/lib/docker/overlay2 -> all created containers images information which are non-persistent storages, comes under STATELESS DATA
+/var/lib/docker/volumes
+
+STATEFULL DATA:
+persistent storage stores in local machine with database.
+
+            container
+             (IMAGE)
+                |
+            Volumes
+                |
+            Filessystems
+               (docker)
+                |
+            /var/lib/docker/volumes	
+		
+we can store the data using 3rd party storages.
+
+================================================================================================================================
+
+Docker (Kubernetes):
+
+-> Images are important when comint got the kubernetes, so images are created in a container(docker) and used in k8's.
+
+Why we need a docker?
+->Before docker VM's used , which has its own resources like CPU, RAM, storage , n/w.
+ VM is a hypervisor, where it seggregates the different physical machines.
+             |  		
+        application which creates VM's from hardware, it can have any number of vm's.
+		
+Docker Introduction:	
+ ->which is a solution for hypervisor, that is CONTAINER 
+													|
+												package which contains all s/w dependencies to run application
+
+what is a docker?
+-> It is a platform where we build/deploy/maintains the containers.
+
+In Kubernetes, we call Docker as CONTAINER's or POD's.	
+
+->Docker seperates application from Infrastructure.
+
+                    VM                                            CONTAINER
+
+       VM1				    VM2									APP1     App2 (both applications can use same bin
+    --------------    -----------------	   						  |       |
+    | App		 |	  |	App           |							--------------
+	|Binary/lib/ |    |   Binary/lib/ |                            BIN/LIB
+	| Guest OS   |    |    Guest OS   |                         --------------
+    --------------    -----------------                               |
+              HYPERVISOR										DOCKER ENGIENE (act as mediator b/w OS & BIN and deploys the application)
+			      |													  |          its has its own bin/lib for different application
+			   HOST OS											   HOST OS
+			      |													  |
+				SERVER                                              SERVER
+  ->It has its own OS which is Guest OS 					   ->create many number of containers
+  ->It is used for longer usage								   ->It shares host OS resources, so it is light weighted
+  ->very slow to boot up 									   ->shorter activity
+  ->resources wastage 										   ->no resources wastage
+  ->scales in/out easily									   ->scales in/out easily 
+  ->data volumes cannot be shared							   ->Data volumes can be shared
+															   ->flexible to use , portable
+															   
+
+What is containerization? How we use container in docker?How we get/edit the images?How we push the images to Repo and viceversa?
+->Losely coupled means it independednt, that means container to container dependency is less thats the reason Micro SErvices came into picture.
+->It bundles entire runtime i.e. it brings code ,deploy as a single package, this is the reason why we use container or Docker.
+->Each and every application runs independently.
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+ KUBERNETES:
+
+Day 01:
+
+->used to deply ,scale,manage our containerized applications, this is why we call it as ORCHESTRATION.
+In docker, its not possible to scale which is why we use DOCKER SWARM OR KUBERNETES.
+														 ------------
+														 alternative tool of k8
+-> It manages all the containers.
+->CNCF owned this k8.(google has built k8 and donated to CNCF)
+-> once of the best usage is to add 3rd party systems like n/w, monitoring, packaging and etc.
+->its a cloud native friendly environment.
+->If we want to define any kind of k8 resources or any API's we can deploy.
+->it has lot of plugins to integrate compare to Docker SWARM.
+
+Distributions:
+ 
+-> COmpany's generated using k8's.
+-> it is nothing but many of the other flavours used k8's source code and generated their own products.
+    eg: like linux is unique one , where other's flavours like AIX, solaries, ubuntu are generated.
+-> LIkewise k8's cloned services are vanila k8's , google Anthos, REdhat openshift, Ranchu, ubuntu cananical k8.
+
+
+VErsions:
+
+-> K8 news releases(bug fix patches) for every 3months 
+-> No enterprose Edition (EE)
+-> 1.30 is the latest version(Every year 16th July 2024 will be released 
+   patch releases : 1.30.0, 1.30.1, .2,.3 ...
+   
+   Max we use n-2 releases which could be stable versions
+ 
+Kubernetes INterfaces:
+
+-> its also a CLIENT-SERVER Architecture.
+-> TO connect/Interface server from client there is an API integrator.
+
+Kubectl -> used to communicate within the K8 cluster.
+-----------------------------------------
+Rarely used:
+
+Curl -> mostly used by developer to communicate with k8 clusters and test the websites within the node
+
+Dashboard: It is a GUI mode, and also used to communicate k8 clusters 
+-------------------------------------------
+
+Naming conventions for K8:
+ AWS->EKS
+ Azure->AKS
+ GCP ->GK
+
+
+ ----------------------------------------------- Kubernetes Architecture -----------------------------------------------------------
+ 
+ 1.Master/controller nodes
+    
+     i.ETCD: -> it stores data and has the status(information) of the cluster(all nodes)
+	       -> It has information of Kube-API server.
+		   -> It is also called Key Value Store.
+	 ii.Kube-controller Manager: -> It maintains current state of the cluster
+								 -> Master node components(Kube-Scheduler, kube-API server, ETCD) will be managedby controler manager.
+	 iii.Kube-API server: ->asks where or on whihc pod to schedule
+	                      ->It get information from worker node
+						  -> It works as a frontend of cluster
+						  -> API(worker nodes related apps) server related information will be shared at ETCD
+	                      -> It has TLS certificates to connect and information stores in CONFIG file (location is .kube/ where we install the minikube)
+	 iv.Kube-scheduler:   -> It decides depending upon the LABEL available on which pod OR if LABEL not mentioned Depending upon the RaM,CU availability scheduler will decisde
+	                      -> has Labels(this should match the containers and on which node to deploy), Taint(need to deploy on particular nodes), 
+	                                Tolerations( restrict the deployment on nodes even though the taint is mentioned)
+						->If we want to deploy application, we have to use pod(it has containers)
+						                                                  -----
+																		  it has schedulers like on which worker node to schedule container or pod
+			***whaterver we do at worker node kubelet and kubeproxy will first communicate to kube-API server of controller node***
+                kubelet and kubeproxy will run on every node			
+ 2.worker nodes
+     i.Kubelet : -> checks the pod/containers up & running in CE of containerruntime and passess to API-serever and stroes info in ETCD
+	             -> passess information/requests to containder Engiene(CE) like pods are up and running or not.
+												   ---------------------
+												   every node has CE, ithas container runtime where it manages the container like where is the container
+												   up and running and checks status like pending or any other state
+	 ii.Kubeproxy: -> it uses IP tables & acts as n/w interface to connect k8's components.
+	               -> to use CURL , we need kubeproxy 
+ 
+ If we have any cloud connector on top of worker node for this we ahve cloud connecters.***
+  (Nodes are also called as Minions)
+  
+  
+  ------------CONTROLLER NODE/MAster------------------                       
+  |                  -------------------    	      |            
+  |                  | Kube-controller |              |
+  |                  |     Manager     |              |
+  |                  -------------------              |                  ------------Worker node------------------
+  |                            |                      |                  |  kubelet/kubeproxy   kubelet/kubeproxy  |
+  | ---------        ----------------------------     |                  | -----------------    -----------------  |  
+  | | ETCD  |<------>| Kube-API SERVER          |     |<---------------> | | Node1 (CE)    |    | Node2 (CE)    |  |          
+  | ---------        |  TLS cert./config file   |     |                  | |  P1   p2  p3  |    |  P1   p2  p3  |  |
+  |  info of         ----------------------------     |                  | |               |    |               |  |
+  | API server                  |                     |                  | -----------------    -----------------  |
+  |                  ----------------------------     |                  -------------------------------------------
+  |                  | Kube-Scheduler           |     |
+  |                  | labels/taint/tolerations |     |
+  |                   ----------------------------    |
+  |                                                   |
+  -----------------------------------------------------
+
+ 
+
+Deployment:
+
+If we deploy the deployment , it deploys replicaset and pod
+    ---------------------------------
+    |                               |
+    |                               |
+	|   -----POD(P1)----- __        |
+    |   | container     | p2|       |
+    |   | (has own      |   |__     |
+	|   |  volumes)     |   | p3    |
+    |   |      C1       |   |  |    |
+    |   -----------------   |  |    |
+    |     |________c2_______|  |    |
+    |        |________c3_______|    |
+    |                               |
+    |                               |
+	---------------------------------
+	Through Deployment we launch pod & Replicaset(p1,p2,p3..)
+	In Depolyment , we have only one Ip addres assigned through which all the pods/containers will be managed.
+	
+--> What is PODS in Kubernetes?
+    -> In K8's , if we want to  deploy we do it throghu API's calls.
+	->AP REsources are DEPLOYMENT,REPLCASETS,PODS and many more 
+    Deployment: REpresents applicatio that which app we are deploying
+	Replicaset: If we want to Scale application 
+	              eg: app running in only 1 pod , if we want to scle in/out we user REpicaset
+	PODS:  In docker we call POD as container
+           In K8's container as POD	
+		   
+		   **** We can hod multiple containers in POD.
+		   
+=>Overlall if we want to check what resources are running use below command 
+   $Kubectl get pods -A
+
+=>when we using multiple containers , we use the same volume for all containers.
+
+Minikube:
+ -> Installation:
+    ------------------ 
+    |minikube        |
+    |  |             |
+    | CONTAINER-------->Docker based container
+    |  |             |
+    | UBUNTU         |
+    |  |             |
+    | VMWare         |
+    |  |             |
+    | WIN OS         |
+	------------------
+================================================	
+	TO check the status of minikube:
+	 $minikube status
+raamu@raamu-VirtualBox:~$ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+raamu@raamu-VirtualBox:~$ kubectl get nodes
+NAME       STATUS   ROLES           AGE    VERSION
+minikube   Ready    control-plane   106d   v1.30.0
+raamu@raamu-VirtualBox:~$
+
+raamu@raamu-VirtualBox:~$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED        STATUS         PORTS                                                                                                                                  NAMES
+0261026b6120   gcr.io/k8s-minikube/kicbase:v0.0.43   "/usr/local/bin/entr…"   3 months ago   Up 3 minutes   127.0.0.1:32772->22/tcp, 127.0.0.1:32771->2376/tcp, 127.0.0.1:32770->5000/tcp, 127.0.0.1:32769->8443/tcp, 127.0.0.1:32768->32443/tcp   minikube
+
+raamu@raamu-VirtualBox:~$ minikube ssh
+docker@minikube:~$ exit
+logout
+
+**One of the advantage of using minikube is we can launch K8's Dashboard
+ 
+ raamu@raamu-VirtualBox:~$ minikube dashboard
+* Verifying dashboard health ...
+
+Minikube Addons :
+
+used to enable the required metricsto active certiaon components
+
+raamu@raamu-VirtualBox:~$ minikube addons list
+|-----------------------------|----------|--------------|--------------------------------|
+|         ADDON NAME          | PROFILE  |    STATUS    |           MAINTAINER           |
+|-----------------------------|----------|--------------|--------------------------------|
+| ambassador                  | minikube | disabled     | 3rd party (Ambassador)         |
+| auto-pause                  | minikube | disabled     | minikube                       |
+| cloud-spanner               | minikube | disabled     | Google                         |
+| csi-hostpath-driver         | minikube | disabled     | Kubernetes                     |
+| dashboard                   | minikube | enabled ✅   | Kubernetes                     |
+| default-storageclass        | minikube | enabled ✅   | Kubernetes                     |
+| efk                         | minikube | disabled     | 3rd party (Elastic)            |
+| freshpod                    | minikube | disabled     | Google                         |
+| gcp-auth                    | minikube | disabled     | Google                         |
+| gvisor                      | minikube | disabled     | minikube                       |
+| headlamp                    | minikube | disabled     | 3rd party (kinvolk.io)         |
+| helm-tiller                 | minikube | disabled     | 3rd party (Helm)               |
+| inaccel                     | minikube | disabled     | 3rd party (InAccel             |
+|                             |          |              | [info@inaccel.com])            |
+| ingress                     | minikube | disabled     | Kubernetes                     |
+| ingress-dns                 | minikube | disabled     | minikube                       |
+| inspektor-gadget            | minikube | disabled     | 3rd party                      |
+|                             |          |              | (inspektor-gadget.io)          |
+| istio                       | minikube | disabled     | 3rd party (Istio)              |
+| istio-provisioner           | minikube | disabled     | 3rd party (Istio)              |
+| kong                        | minikube | disabled     | 3rd party (Kong HQ)            |
+| kubeflow                    | minikube | disabled     | 3rd party                      |
+| kubevirt                    | minikube | disabled     | 3rd party (KubeVirt)           |
+| logviewer                   | minikube | disabled     | 3rd party (unknown)            |
+| metallb                     | minikube | disabled     | 3rd party (MetalLB)            |
+| metrics-server              | minikube | disabled     | Kubernetes                     |
+| nvidia-device-plugin        | minikube | disabled     | 3rd party (NVIDIA)             |
+| nvidia-driver-installer     | minikube | disabled     | 3rd party (Nvidia)             |
+| nvidia-gpu-device-plugin    | minikube | disabled     | 3rd party (Nvidia)             |
+| olm                         | minikube | disabled     | 3rd party (Operator Framework) |
+| pod-security-policy         | minikube | disabled     | 3rd party (unknown)            |
+| portainer                   | minikube | disabled     | 3rd party (Portainer.io)       |
+| registry                    | minikube | disabled     | minikube                       |
+| registry-aliases            | minikube | disabled     | 3rd party (unknown)            |
+| registry-creds              | minikube | disabled     | 3rd party (UPMC Enterprises)   |
+| storage-provisioner         | minikube | enabled ✅   | minikube                       |
+| storage-provisioner-gluster | minikube | disabled     | 3rd party (Gluster)            |
+| storage-provisioner-rancher | minikube | disabled     | 3rd party (Rancher)            |
+| volumesnapshots             | minikube | disabled     | Kubernetes                     |
+| yakd                        | minikube | disabled     | 3rd party (marcnuri.com)       |
+|-----------------------------|----------|--------------|--------------------------------|
+raamu@raamu-VirtualBox:~$
+
+
+
+
+================================================
+
+What is a namespace?
+
+It is where we can restrict the resources.
+
+To check the resources:
+
+raamu@raamu-VirtualBox:~$ kubectl api-resources
+NAME                                SHORTNAMES   APIVERSION                        NAMESPACED   KIND
+bindings                                         v1                                true         Binding
+componentstatuses                   cs           v1                                false        ComponentStatus
+configmaps                          cm           v1                                true         ConfigMap
+endpoints                           ep           v1                                true         Endpoints
+events                              ev           v1                                true         Event
+limitranges                         limits       v1                                true         LimitRange
+
+==================================================
+
+AWS Cloud specific for Kubernetes:
+
+In Aws , Master node will not shown , only woker node will be shown.
+COz Aws maintains the master node by default
+
+In Minikube we see bothe master node and woker nodes.
+ 
+ for kuberneters to invoke , 
+ we use kubctl in minikube and rest of the cloud(AZURE,GCP..) 
+ we use eksctl in AWS
+ 
+ raamu@raamu-VirtualBox:~$ kubectl top nodes
+error: Metrics API not available
+raamu@raamu-VirtualBox:~$ kubectl top pods
+error: Metrics API not available
+raamu@raamu-VirtualBox:~$
+
+Gives the utilization report when we enable the metrics-server addons on minikube
+
+======================================================
+Nodegroups::
+
+we can use multiple group nodes
+used to scale up/down the number of nodes in cluster-config.yaml file
+                                             -------------------
+		Eg: nodegroups:
+		      -name:eks-node-grop
+			  instanceType:t2.medium
+			  desiredCapacity:3
+
+Kube config file:
+
+It tells how to connect the different clusters , which stores the TLS certificates and acts as the mediator
+
+Location : .kube in config directory
+=======================================================
+Access:
+
+In kubernetes, only role based access cab be controlled fot teh users
+
+In Aes: , IAM->SSO-> user access
+			  
+=========================================================
+
+Networking:
+
+Calico/flannel/wavenet are few network addons for containers/pods
+In Minikube , we can use any above n/w's addons
+In Kubeadm, calicio kind of n/w is must for pod/containers.
+			  
+			  
+=======================================================================
+
+Day 08: Kubernetes API Access and Resources
+
+=>API Access: Master/controller node components
+  -> All/Any API' s are known as Restful API's.
+                                 -------------
+								 where we can get the information
+								 through API's like Curl commands 
+													----								 
+													information like what we have deployed								 
+													created, updated	
+
+=>How to control API access & Regulate:
+  By using RBAC(Role based acces control)	, we can restrict/provide the access to the users.
+  we get  information in .kube/config file
+                         -----------------
+                         like who have access and what access
+  ***RBAC need to be installed to access the below commands.
+  
+To check the acces in Kubernetes:
+
+In real time how to /where to check the access we got.
+
+raamu@raamu-VirtualBox:~$ kubectl auth can-i create pods
+yes
+raamu@raamu-VirtualBox:~$ kubectl auth can-i create deployments
+yes
+raamu@raamu-VirtualBox:~$ kubectl auth can-i create --as ramu
+error: you must specify two arguments: verb resource or verb resource/resourceName.
+See 'kubectl auth can-i -h' for help and examples.
+raamu@raamu-VirtualBox:~$ kubectl auth can-i -h
+Check whether an action is allowed.
+
+ VERB is a logical Kubernetes API verb like 'get', 'list', 'watch', 'delete', etc. TYPE is a Kubernetes resource.
+Shortcuts and groups will be resolved. NONRESOURCEURL is a partial URL that starts with "/". NAME is the name of a
+particular Kubernetes resource. This command pairs nicely with impersonation. See --as global flag.
+
+Examples:
+  # Check to see if I can create pods in any namespace
+  kubectl auth can-i create pods --all-namespaces
+
+  # Check to see if I can list deployments in my current namespace
+  kubectl auth can-i list deployments.apps
+
+  # Check to see if service account "foo" of namespace "dev" can list pods
+  # in the namespace "prod".
+  # You must be allowed to use impersonation for the global option "--as".
+  kubectl auth can-i list pods --as=system:serviceaccount:dev:foo -n prod
+
+  # Check to see if I can do everything in my current namespace ("*" means all)
+  kubectl auth can-i '*' '*'
+
+  # Check to see if I can get the job named "bar" in namespace "foo"
+  kubectl auth can-i list jobs.batch/bar -n foo
+
+  # Check to see if I can read pod logs
+  kubectl auth can-i get pods --subresource=log
+
+  # Check to see if I can access the URL /logs/
+  kubectl auth can-i get /logs/
+
+  # List all allowed actions in namespace "foo"
+  kubectl auth can-i --list --namespace=foo
+
+Options:
+    -A, --all-namespaces=false:
+        If true, check the specified action in all namespaces.
+
+    --list=false:
+        If true, prints all allowed actions.
+
+    --no-headers=false:
+        If true, prints allowed actions without headers
+
+    -q, --quiet=false:
+        If true, suppress output and just return the exit code.
+
+    --subresource='':
+        SubResource such as pod/log or deployment/scale
+
+Usage:
+  kubectl auth can-i VERB [TYPE | TYPE/NAME | NONRESOURCEURL] [options]
+
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+raamu@raamu-VirtualBox:~$
+						 
+
+=> Core Kubernetes Objects:
+
+same Ip address for all containers in pods, ie. 1 IP address is assigned for pod.
+
+ -----Deployment(Application)-----  
+ |                               |
+ |   192.168.0.1                 |
+ |   -----POD(P1)----- __        |
+ |   | container     | p2|       |
+ |   | (has own      |   |__     |                 
+ |   |  volumes)--------------------> PVC -------> PV --------> Storage
+ |   |      C1  TLS  |   |p3|    |    persistent   persistent
+ |   -----------------   |  |    |    volume       volume
+ |     |________c2_______|  |    |    claims
+ |        |________c3_______| ---------------------------->Replicasets
+ |                      |_______________Config maps(whaterver the configuration /env variables in containers
+ |                               |      Secret-> password/critical information and these will be outside of the pod 
+---------------------------------                that means if we delete the pods also secrets will be available
+
+All above are used for the Micro Services becasue these are isolated with each other.
+As kubernetes acts as a Micro Services ***********
+
+TO Access the API Services:
+
+If we want to access the Kubectl TLS certificate available in .kube/config file ********
+
+-> By using CURL we can access the API services, but mostly this CURL is used by developers.
+-> Kubeproxy (it already has the TLS certificate)
+-> During using CURL , curl will goes and connect kubeproxy
+-> If we want to run we need to expose iwth 8001 port.
+->for using curl , we need certificates like user and CL pem certificates then we nwws ro connect to the controller node.
+=================================================================================
+API' through CURL: 
+Mostly it be used in Jenkins 
+
+
+=>It runs the kubeproxy:
+raamu@raamu-VirtualBox:~$ kubectl proxy --port=8001 &
+[1] 38652
+raamu@raamu-VirtualBox:~$ Starting to serve on 127.0.0.1:8001
+^C
+=>Shows the versions of the kubernetes
+raamu@raamu-VirtualBox:~$ curl http://localhost:8001/version
+{
+  "major": "1",
+  "minor": "30",
+  "gitVersion": "v1.30.0",
+  "gitCommit": "7c48c2bd72b9bf5c44d21d7338cc7bea77d0ad2a",
+  "gitTreeState": "clean",
+  "buildDate": "2024-04-17T17:27:03Z",
+  "goVersion": "go1.22.2",
+  "compiler": "gc",
+  "platform": "linux/amd64"
+}raamu@raamu-VirtualBox:~$
+
+=>shows the information of the namespaces in Jason format
+
+}raamu@raamu-VirtualBox:~$ curl http://localhost:8001/api/v1/namespaces
+{
+  "kind": "NamespaceList",
+  "apiVersion": "v1",
+  "metadata": {
+    "resourceVersion": "23208"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "default",
+        "uid": "447b1e69-2716-48e4-91b9-5ceb58d6b465",
+        "resourceVersion": "40",
+        "creationTimestamp": "2024-05-05T12:02:00Z",
+        "labels": {
+          "kubernetes.io/metadata.name": "default"
+        },
+        "managedFields": [
+          {
+            "manager": "kube-apiserver",
+            "operation": "Update",
+            "apiVersion": "v1",
+            "time": "2024-05-05T12:02:00Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {
+              "f:metadata": {
+                "f:labels": {
+                  ".": {},
+                  "f:kubernetes.io/metadata.name": {}
+                }
+              }
+            }
+          }
+        ]
+      },
+
+=>shows the information of the namespaces
+
+raamu@raamu-VirtualBox:~$ kubectl get ns
+NAME                   STATUS   AGE
+default                Active   106d
+kube-node-lease        Active   106d
+kube-public            Active   106d
+kube-system            Active   106d
+kubernetes-dashboard   Active   106d
+raamu@raamu-VirtualBox:~$ kubectl get namespace
+NAME                   STATUS   AGE
+default                Active   106d
+kube-node-lease        Active   106d
+kube-public            Active   106d
+kube-system            Active   106d
+kubernetes-dashboard   Active   106d
+raamu@raamu-VirtualBox:~$
+
+=>shows the information of the pods in jason format
+
+raamu@raamu-VirtualBox:~$ curl http://localhost:8001/api/v1/namespaces/default/pods
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "resourceVersion": "23362"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "mydeploy-64c98c499f-864vz",
+        "generateName": "mydeploy-64c98c499f-",
+        "namespace": "default",
+        "uid": "41164f28-e79e-4a04-b4d3-33278f0ab497",
+        "resourceVersion": "20994",
+        "creationTimestamp": "2024-07-25T07:16:09Z",
+        "labels": {
+          "app": "mydeploy",
+          "pod-template-hash": "64c98c499f"
+        },
+        "annotations": {
+          "cni.projectcalico.org/containerID": "71c2ac6e44009288e3ef7fbd6ce501647cfa8ba0482e6dcc4e3de11772d6ada0",
+          "cni.projectcalico.org/podIP": "10.244.120.106/32",
+          "cni.projectcalico.org/podIPs": "10.244.120.106/32"
+        },
+        "ownerReferences": [
+          {
+            "apiVersion": "apps/v1",
+
+=>shows the information of the pods
+
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS    RESTARTS        AGE
+mydeploy-64c98c499f-864vz   1/1     Running   3 (4h18m ago)   25d
+mynginx                     1/1     Running   3 (4h18m ago)   25d
+
+=> To delete the pod through curl
+
+raamu@raamu-VirtualBox:~$ curl -XDELETE http://localhost:8001/api/v1/namespaces/default/pods/mynginx
+
+
+
+===============================================================================================================
+
+Day 09: Kubernetes pods, sidecar and Init container:
+
+what is  a POD?
+-> consider it as a server
+                      |
+					container(multiple)
+					  |
+					NAMESPACE(Pod will be created inside of namespace)
+					  |
+					IP Address
+
+-> when we do deployment or statefulset  pods will be created.
+->Deployment has rescheduling options.
+    eg: if pod goes down or deletes, deployment of rescheduling option createe a new pod.
+	
+Naked pod:(not recommended)
+
+-> If pod goes down , new pods will not create as their is no rescheduling option available.
+
+Rolling update: (Deployment)
+
+-> while we doing deploys, we can create updates which is called Rolling update.
+               eg: Each pod will be upgraded to latest version 
+			        v1-->v2
+					
+How to manage pod?
+
+1. To create Naked pod:
+
+raamu@raamu-VirtualBox:~$ kubectl run nakednginx --image=nginx
+pod/nakednginx created
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS    RESTARTS        AGE
+mydeploy-64c98c499f-864vz   1/1     Running   3 (4h44m ago)   25d
+mynginx                     1/1     Running   3 (4h44m ago)   25d
+nakednginx                  1/1     Running   0               23s
+raamu@raamu-VirtualBox:~$
+
+=>to check what pod has created.
+raamu@raamu-VirtualBox:~$ kubectl get pods -o yaml
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: 71c2ac6e44009288e3ef7fbd6ce501647cfa8ba0482e6dcc4e3de11772d6ada0
+      cni.projectcalico.org/podIP: 10.244.120.106/32
+      cni.projectcalico.org/podIPs: 10.244.120.106/32
+    creationTimestamp: "2024-07-25T07:16:09Z"
+    generateName: mydeploy-64c98c499f-
+    labels:
+      app: mydeploy
+      pod-template-hash: 64c98c499f
+    name: mydeploy-64c98c499f-864vz
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: mydeploy-64c98c499f
+      uid: 8e9ee74f-451d-43d8-ac43-f81902b3f558
+    resourceVersion: "20994"
+    uid: 41164f28-e79e-4a04-b4d3-33278f0ab497
+  spec:
+    containers:
+    - image: nginx
+   
+
+=> To check above fiel in readble format.
+
+raamu@raamu-VirtualBox:~$ kubectl get pods -o yaml > nakednginx.yaml
+raamu@raamu-VirtualBox:~$ ls -ltr
+total 39868
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Videos
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Templates
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Public
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Pictures
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Music
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Downloads
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Documents
+drwxr-xr-x 2 raamu raamu     4096 May  5 16:03 Desktop
+-rw-rw-r-- 1 raamu raamu 40775680 May  5 17:28 minikube-linux-amd64
+drwx------ 5 raamu raamu     4096 Jul 25 12:00 snap
+-rw-rw-r-- 1 raamu raamu    10339 Aug 20 01:54 nakednginx.yaml
+raamu@raamu-VirtualBox:~$ date
+Tue Aug 20 01:55:01 AM IST 2024
+raamu@raamu-VirtualBox:~$ more nakednginx.yaml
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: 71c2ac6e44009288e3ef7fbd6ce501647cfa8ba0482e6dcc4e3de11772d6ada0
+      cni.projectcalico.org/podIP: 10.244.120.106/32
+      cni.projectcalico.org/podIPs: 10.244.120.106/32
+    creationTimestamp: "2024-07-25T07:16:09Z"
+    generateName: mydeploy-64c98c499f-
+    labels:
+      app: mydeploy
+      pod-template-hash: 64c98c499f
+    name: mydeploy-64c98c499f-864vz
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: mydeploy-64c98c499f
+      uid: 8e9ee74f-451d-43d8-ac43-f81902b3f558
+    resourceVersion: "20994"
+    uid: 41164f28-e79e-4a04-b4d3-33278f0ab497
+
+
+
+=> how to check details about pod (like container info and what is running in container)
+ 
+raamu@raamu-VirtualBox:~$ kubectl get pods -o wide
+NAME                        READY   STATUS    RESTARTS        AGE     IP               NODE       NOMINATED NODE   READINESS GATES
+mydeploy-64c98c499f-864vz   1/1     Running   3 (4h52m ago)   25d     10.244.120.106   minikube   <none>           <none>
+mynginx                     1/1     Running   3 (4h52m ago)   25d     10.244.120.101   minikube   <none>           <none>
+nakednginx                  1/1     Running   0               7m39s   10.244.120.107   minikube   <none>           <none>
+raamu@raamu-VirtualBox:~$ kubect get pods
+kubect: command not found
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS    RESTARTS        AGE
+mydeploy-64c98c499f-864vz   1/1     Running   3 (4h52m ago)   25d
+mynginx                     1/1     Running   3 (4h52m ago)   25d
+nakednginx                  1/1     Running   0               7m59s
+raamu@raamu-VirtualBox:~$ kubectl describe pod nakednginx
+Name:             nakednginx
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Tue, 20 Aug 2024 01:49:46 +0530
+Labels:           run=nakednginx
+Annotations:      cni.projectcalico.org/containerID: 434907fc6e9d75682d76940bd7e376bbc91d5e6c2b233fdb5425c1918f894bf3
+                  cni.projectcalico.org/podIP: 10.244.120.107/32
+                  cni.projectcalico.org/podIPs: 10.244.120.107/32
+Status:           Running
+IP:               10.244.120.107
+IPs:
+  IP:  10.244.120.107
+Containers:
+  nakednginx:
+    Container ID:   docker://216ac03a15763ac5fd9d0c3f760798a17e3eeba79651f6542b51236a318626f5
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:447a8665cc1dab95b1ca778e162215839ccbb9189104c79d7ec3a81e14577add
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Tue, 20 Aug 2024 01:50:00 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vmc7z (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-vmc7z:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  8m15s  default-scheduler  Successfully assigned default/nakednginx to minikube
+  Normal  Pulling    8m7s   kubelet            Pulling image "nginx"
+  Normal  Pulled     8m3s   kubelet            Successfully pulled image "nginx" in 4.052s (4.052s including waiting). Image size: 187694648 bytes.
+  Normal  Created    8m3s   kubelet            Created container nakednginx
+  Normal  Started    8m1s   kubelet            Started container nakednginx
+raamu@raamu-VirtualBox:~$
+
+
+===============================================================
+
+What is YAML?
+
+->It is human readable languange
+->yaml limit is a open source
+->Indentation(blank space) is only the issue
+  ----------------------
+   works like listener/tnsnames ora files
+   
+    eg: ________
+	   |________|       |
+          ________      |
+         |________|		|-----> consider 3 boxes are resources which are in relation to each other so like wise spaces
+		   ________     |       segregates the relations with resources
+          |________|	|	  
+                        
+	  ________
+      ________|       |
+        ________      |
+       |________|	  | -----> consider as resource 2
+         ________     |
+        |________|	  |
+		
+    eg: 
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: 71c2ac6e44009288e3ef7fbd6ce501647cfa8ba0482e6dcc4e3de11772d6ada0
+      cni.projectcalico.org/podIP: 10.244.120.106/32
+      cni.projectcalico.org/podIPs: 10.244.120.106/32
+    creationTimestamp: "2024-07-25T07:16:09Z"
+    generateName: mydeploy-64c98c499f-
+    labels:
+      app: mydeploy
+      pod-template-hash: 64c98c499f
+    name: mydeploy-64c98c499f-864vz
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: mydeploy-64c98c499f
+      uid: 8e9ee74f-451d-43d8-ac43-f81902b3f558
+    resourceVersion: "20994"
+    uid: 41164f28-e79e-4a04-b4d3-33278f0ab497
+------------------------------------------------------------------------------
+YAML Ingredients:
+
+How YAML looks like?
+
+->whenever we create yaml manifest, it has Apiversion which specifies the version of API
+   eg: apiVersion:
+            Kind:
+		metadata:
+      Spec:		
+=> If we do not have any idea what pod /deployment doing, check below command,
+   whihc shows what are teh components need to be added in yaml file.	
+	raamu@raamu-VirtualBox:~$ kubectl explain pod
+KIND:       Pod
+VERSION:    v1
+
+DESCRIPTION:
+    Pod is a collection of containers that can run on a host. This resource is
+    created by clients and scheduled onto hosts.
+
+FIELDS:
+  apiVersion    <string>
+    APIVersion defines the versioned schema of this representation of an object.
+    Servers should convert recognized schemas to the latest internal value, and
+    may reject unrecognized values. More info:
+    https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$ kubectl explain pod.spec |less
+KIND:       Pod
+VERSION:    v1
+
+FIELD: spec <PodSpec>
+
+
+DESCRIPTION:
+    Specification of the desired behavior of the pod. More info:
+    https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+    PodSpec is a description of a pod.
+
+FIELDS:
+  activeDeadlineSeconds <integer>
+    Optional duration in seconds the pod may be active on the node relative to
+    StartTime before the system will actively try to mark it failed and kill
+    associated containers. Value must be a positive integer.
+
+  affinity      <Affinity>
+    If specified, the pod's scheduling constraints
+
+
+To create pod/deployemt/image with yaml file:
+
+Imparative: create any pod from the simple template or we can get from kubernetes.io
+Declarative: using command line
+ eg: kubectl create -f busybox.yaml.
+ 
+ =====================================================================
+ 
+ 
+Multi container pod:
+
+1 container is standard.(1 pod-1 container)
+
+Rarely we have multi contianers in IT(1 pod- 2 or more container)
+
+         POD                  
+ 
+    C1	        C2		
+ ------      -------	
+ |    |       |    |	
+ |App1|       |App1| 
+ |    |       |    | 
+ ------       ------
+ 
+ **IF pod goes down c1 and c2 also down.
+ 
+ Multicontainer names usages are:
+ 
+ 1.Sidecar
+ 2.Ambasdor
+ 3.Adaptor
+ 
+i.Sidecar:
+   -> to enchance the primary application we create sidecar
+       eg: i. sidecar may used for logging/monitoring/synchronizing
+	       ii. if we want to monitor log of App , then we need to install agent in sidecar container
+		   iii. for service mesh also we can use sidecar container
+		            ------------
+					to manage teh traffic and how pods are communicating
+          	     
+				     C1	
+                  ----------
+                  |  App    |
+                  |  |      |
+                  | sidecar |
+				  |  agent  |
+				  |	insall  |
+				  |         |
+                  ----------
+ii. Ambasdor:
+ acts as a procy container like a jump box,
+  i.e if we want to connect to c2 first need to connect to the c1 
+  
+
+iii. Init COntainer:
+-> one of the multicontainer example.
+-> It is an additional container inside the pod which completes the task
+-> where as in sidecar , we do not have any task.
+ 
+without completing the init container, the main container will not start.
+
+             POD        
+ TASK    
+  |      C1	        C2	
+  |  ------      -------
+  |__|    |       |    |
+     |Init|       |main|
+     |    |       |    |
+     ------       ------
+	-> in main container if t app is running wiht index.html or .sh file
+    ->then init container first checks whether index.html or .sh file working , if these not available
+      it throughs error.
+
+
+Horizontal AutoScalar:
+
+->	  TO scale up/down the pods based on the CPU utilization
+->By using this the replicaset will increase if the CPU utilization increases.
+
+        
+		 -----Deployment(Application)----- 
+         |                               |
+         |   192.168.0.1                 |
+         |   -----POD(P1)----- __        |
+         |   | container     | p2|       |
+         |   | (has own      |   |__     | 
+         |   |  volumes)-------------------
+         |   |      C1  TLS  |   |p3|    | 
+         |   -----------------   |  |    | 
+         |     |________c2_______|  |    | 
+         |        |________c3_______| -----
+         |                      |__________
+         |                               | 
+         --------------------------------  
+		 
+====================================================================================
+
+DAy10: Kubernetes Namspaces and Quotas:
+
+Namespaces:
+->In linux kernel resources will be used. Likewise, in k8's , namespaces will be used 
+*** when we create resoures , it isolates the resources and enables RBAC(Role Based Access control).  
+																	-----
+																	this means, users are restricted to use certain namespaces
+     eg: resources are pod/deployment/configmap/secrest/stateful sets.
+->
+quotas:
+-> gives limitation on development not on pod.
+->In certain namespaces we can restrict the CPU/RAM adn pod creation limitations.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Day11: Kubernetes Security Context|jobs|Crontab:
+
+HOw can we access the pod?
+					  ----
+					  eg: statefulset deployment
+						
+By using Port Forwarding services we can accessthe pod , it is the simplest way to access the pod for testing.
+         ------------------------
+
+->Basically all pods will be available in private Load Balancer(LB) from here all users and other clients able to access.
+-> Port Forwarding  is the concept where we can directly connect to the pod without going to the LB or any other Jump server.
+
+Security Context:
+
+->Defines about teh privileges & access controls that which can include to pod or users.
+->Most of the pods will run under non-root user.
+  privilege user id Root
+  No-privilege user id non-Root
+
+our agenda is to do not run in Root user , to check this:
+  
+raamu@raamu-VirtualBox:~$ kubectl explain pod.spec.securityContext |less
+KIND:       Pod
+VERSION:    v1
+
+FIELD: securityContext <PodSecurityContext>
+
+
+DESCRIPTION:
+    SecurityContext holds pod-level security attributes and common container
+    settings. Optional: Defaults to empty.  See type description for default
+    values of each field.
+    PodSecurityContext holds pod-level security attributes and common container
+    settings. Some fields are also present in container.securityContext.  Field
+    values of container.securityContext take precedence over field values of
+    PodSecurityContext.
+
+If the privilege is enabled on the Pod the privielges applicable to the containers which are running under thee pod.
+
+raamu@raamu-VirtualBox:~$ kubectl explain pod.spec.containers.securityContext |less
+KIND:       Pod
+VERSION:    v1
+
+FIELD: securityContext <SecurityContext>
+
+
+DESCRIPTION:
+    SecurityContext defines the security options the container should be run
+    with. If set, the fields of SecurityContext override the equivalent fields
+    of PodSecurityContext. More info:
+    https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+    SecurityContext holds security configuration that will be applied to a
+    container. Some fields are present in both SecurityContext and
+    PodSecurityContext.  When both are set, the values in SecurityContext take
+    precedence.
+
+In K8's standard user id: 1000
+In docker we use only user no user id(UID)
+
+Jobs:
+generally once we create the pod , it will run untill and unless we delete the pod, so job is one time task like backup/batch jobs
+
+why we required a jobs in pods?
+  eg: we have a task that run on pod, once the task completes the pod should go off.
+  
+  spec.ttlSecondsAfterFinished -> its an attribute , whihc cleans the jobs automatically coz in k8's if we have multiple jobs and
+                                       these need to be remove for after certain time , we need to use this attribute.
+									   
+
+different job types:
+i.  completion : used for one-shot task
+ii. Parallalism : If we have 3 jobs , 3 jobs will run at a time (for these we need to use load test)
+
+REstart policy:
+
+once jobs completes , it restarts again. if restart policy enabled.
+
+============================================================================================
+
+Day 12: Kubernetes Resource Limiations |Deployment:
+
+-> Generally pods will utilize some amount of cpu & memory
+-> Initially we requests the RAM/CPU, during the deployment of pods like reuest=2GB and limt=4G
+-> we will give limitations for CPU and RAM inside the Container
+                                                       ---------
+    attribute is :  pod.Spec.Containers.resources
+       cpu->250m (we mention in Millicore(Mi)/MilliCPU -?1/100th of the cpu core
+	   RAM-> 64Mi
+	   
+***************The CPU/RAM limitations all managed by Kube-Scheduler in MAster node .
+*************The resources we are able to convert only on deployments and containers not on PODS
+
+             ========================================
+			 ||                                    ||
+			 ||			 Till this PODS has done   ||
+	         ||                                    ||
+             ||                                    ||
+		     ========================================
+			 
+			 	 pods->namespaces(used to seggregate the Micro services)->containers-> resources adding
+				 containers->
+				 jobs->
+				 
+				 
+				 
+				 
+				 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$DEPLOYMENT$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+DEPLOYMENT:
+
+->Its job is to run Replicas everytime.
+                    --------
+					Job is to checeks every pod is running.
+***If we want to run any application in kubernetes, deployments is used.
+
+Advantage:
+---------
+-> we can scale the application, instances(nothing but the pods)
+-> Reliability of applications.
+   ----------
+    ensure to check the pod/containers up & running    
+-> we can do updatesby using deployment of the application
+             -------
+			 with this application will run up & runnning everytime wiht zero downtime
+
+=> 2 methods to deploy application:
+  i. kubectl create deploy(short form of deployment)
+  ii. By using YAML files
+  
+ raamu@raamu-VirtualBox:~$ kubectl create deployment myweb --image=nginx --replicas=3
+deployment.apps/myweb created
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+myweb-59dbdfc554-2vwkc   0/1     ContainerCreating   0          7s
+myweb-59dbdfc554-bklml   0/1     ContainerCreating   0          7s
+myweb-59dbdfc554-gz64h   1/1     Running             0          7s
+raamu@raamu-VirtualBox:~$
+
+==>>Managing the Scalability:
+
+-> In older versions, we do not have deployment in kubernetes. so earlier it has done through replication controllers.
+                                                                                              -----------------------
+																							  where we need to create replicasets
+																							  seperately and manage them
+
+raamu@raamu-VirtualBox:~$ kubectl api-resources |less
+
+ $kubectl scale deploy myweb --replicas=4 (ensure if we increase the replicas we need that much amount of resources CPU/RAM)
+                                   ******It creates replicas along wiht pods, but if we create POD , replicas will not create 
+
+*****If we delete the pod replicaset will mmonitor and creates the new containers
+
+Deployment work is to run replicasets 
+replicaset work is to ensure that pods are up and running	
+
+
+							   
+
+
+So in deployment replicasets will be automatically created.*********************
+
+======================================================================================================
+                                                
+Day13:Kubernetes Deployment Strategies:
+                 ----------
+creating deployment and upgrade of version:
+
+How we update deployments with zero downtime?
+How to rollout likes updates & upgrades?
+what are the different parts we update?
+
+ eg: v1.2 ->v1.3 ->chaning the Image update with Zero downtime by using 
+                   $Kubectl set
+				   $kubectl edit
+
+-> A new replicaset  will be created whenever we update 
+     --------------
+	 with new properties
+
+-> Old replicaset will be in our server and it not deleted.
+       ---------
+	   deployment.Spec.revisionHistorylimit -> by this attribute we can change the limits then old replcaset will be deleted.
+	    ------------                          (n-2-->updates depend on the use case[every3 months release and keep Images 3 times])
+		by default is 10
+
+Creating deployment:
+
+------------------------------------
+
+LABELS:
+
+* selector is used to select specific application if muleiple applications running in container
+ Deployment checks on based on label
+ like while we give a app name app=nginx  , this will assign to the LABEL	
+ ANNOTATIONS : we can give metadata information: 
+
+->It is a tag
+->It a key-value name
+->Gives additional information about rewources
+  eg: env=test
+      env=prod
+-> If we want to expose the app=nginx , then fro label to connect there is an service to route to the app=nginx
+                                                                              --------
+																			  checks the available replicas/pods
+																			  
+
+								  
+
+	  
+How Label and selector works in DEployment:
+
+DEployment intiating with 3 replicas with label and selector
+
+         ------------DEPLOYMENT-----------------------------------	  
+         |                 	                                      |
+         | -----------------   ----------------- -----------      |  
+		 | | 3 Replicaset  |   | 3 Replicaset  | |1 2 3    |      |  
+         | | env=dev or    |   |               | | pods    |      |  
+         | | Label=dev     |   |               | |         |      |  
+         | -----------------   -----------------  ----------      |  
+         ---------------------------------------------------------
+
+1> Replicaset checks how many pods are running 
+2> If one pods goes down label send notification to replicaset , then replicaset initate for new pod to start
+This is how label works
+3>like wise selector also called by label.
+
+To delete the label of the pod	 
+
+-------------------------------------
+
+Update strategies: which is automate the version upgrade 
+
+
+
+when we do any changes in deployment, it will immediately updates and also depends on the below update strategies:
+
+1. Recreate:
+ usage, while we have image version of 1.1 and we need to run 1.3 , then we need to delete 1.1 version cox, 
+ id 2 versions running simultaneoulsy applciation will not run 
+ 
+  so for thi we need to kill all pods so application is not run and install the 1.3 version
+  
+  this is old seanrio and we never use it.
+  
+  To over come this 
+2. Rolling update:
+
+by default in k8's we have rolling update
+
+             pod1    pod2    pod3
+ stage 1    v1->v2   v1->v2  v1->v2
+              down	  up 	  up
+ stage 2    v1->v2   v1->v2  v1->v2
+              up 	  down 	  up
+ stage 3    v1->v2   v1->v2  v1->v2
+              up 	  up 	  down		
+
+			  
+Options to rollout:
+
+Max unavailable :
+
+Max number of pods that should be updated at same time
+
+eg: out of 4 pods, we mention max=1 or 25% , it will bringdown only 1 pod  and other should up and run
+
+
+maxsurge  :
+
+the number of max can run heyond the desired number of pods
+eg: In pod if we mention 4 replicaset 
+   then desired would be 4  and if we have max surge is 6
+    During update  if we mention max=1 and in surge=6  out of 4 (1 will down and 3 available) 
+	so based on surge 3 more new versions of pods will create that means now total we have 6 pods 3 old and 3 new
+	next stage out of 3 old another goes down then we have 2 old and 3 new we have then surge creates 1 more new
+	then we have toatal 4 new versions which matchs the desired replica 0f 4
+	
+	in next stage , since we have all 4 pods are updated with new versions the remaining 2 goes down
+	
+	SO in total, we have 4 new versions of pod available
+
+===========================================================================================================
+
+Day14: Daemonset|pod Networking| K8's Networking:
+
+DEployment: pod will re-created if we delete the pod
+Replicaset: It amanges for pod recreation
+
+Alternatives of Deployment:
+
+1. Statefulset
+
+2. Daemonset:(for pod creation /deletion daemonset will be used like deployment)
+
+  *****Most of the times in real time we see Daemonset in Kube-system namespaces 
+   -> It will create pod in every node when we add once pod in cluster and likewise the pod will 
+     be removed if we reove the pod from the cluster.
+   ->Its knid of a deployment
+   ->It will keep one pod instacne in every node
+       
+	   eg:            3 node cluster
+	   
+	        -----------   -----------  -----------
+	        |  pod1   |   |  pod1   |  |  pod1   |
+            | Daemon  |   | Daemon  |  | Daemon  |
+            | 	      |   | 	    |  | 	     |
+             ----------    ----------   ----------
+         Daemonset will create pod in every node
+		 
+  -> It will be used when we use promoteous and ELK(Elastic seardh)			  
+                                 ----------------------------------
+								 Both are monitoring agents always deployes by Daemonset
+								 
+								 These mainly collects the logs of the pod when we install the agent
+								 of Promoteous or Elastic beat agent of Filebeat and send log info to ELK
+
+POD Networking:
+
+Basically in pod , the containers in it has same Ip addresses
+
+   -----POD------
+   |C1     pause|
+   |   container|--> Pause container: runs in background whenver we deploy pod, it will be created first
+   |c2 	        |                    -> it manages the loopback add/Ip add/names and CGroups
+    -------------                    -> we can not login into pause containser (its a process)
+	
+POd to POD  communication:
+
+-> Irrespective og namespaces all pods will be communicated whihc is risk,
+-> SO , we have network policies to restrict the traffic communication.
+
+K8's Networking:
+
+How we communicating and hwo we are exposing the k8's pods through netwrok.
+
+                        cluster
+          ----node1--   ----node2--  ----node3--
+          |  pod1   |   |  pod2   |  |  pod3   |
+	      |  n/w:   |   |  n/w:   |  |  n/w:   |
+          | app1    |   | app2    |  | app3    |
+           ----------    ----------   ----------
+		   10.0.0.1      10.0.0.2    10.0.0.3
+		   
+ -> to communicate p1-app1 through n/w node1 , we have services
+                                                       ----------
+                                                    i. NODEPORT
+                                                    ii.Cluster IP (defalut)													
+													iii.Load Balancer(works as round robin fashion)
+													iv.Ingress
+	
+ *****Users connections to application through  n/w services::
+      Node n/w->clsuter n/w ->pod n/w->application	
+	  
+	  BAsically we use these services to expose the applicaitons
+	  we need to use nodeport and cluster ip seperately and these services works on Round Robin fashion
+ 
+ i. NODEPORT:  Range 30000 - 32768
+   -> For every node has node port , if we expose it particular particuler nodeport communicate with the pod,
+     whihc it connectr to the clusterIp fro communication b/w node to pod
+	 
+   -> user connects to node1 then to the nodeport & since all teh pods connected to 
+      the nodeport the use able to access the application of pod 
+  -> If we need to skip the nodes, user need to connect to the Ingress and then to the nodeport, 
+   then gives acces to the application
+	  
+	         _8080____   ________   ________
+	users-> |_Node1__| |_Node2__| |__Node3_|     
+       |        |			
+	 Ingress    |        ____________
+	   |------->|________|_NODEPORT_| 192.168.0.1
+                            
+				   ---------|-----------
+              _____|___	 ___|_____	 __|______			   
+             |________| |________|  |________|   
+			    p1         p2          p3
+			10.0.0.1      10.0.0.2    10.0.0.3	
+			
+ii. Cluster IP:
+   ->If cluster Ip involved, the user connects to Ingress and directly reaches to cluster ip by skipping the nodes 			
+				                                  -------
+   -> It a default services which is internal that means used for internal communucation.												  
+
+	         _8080____   ________   ________
+	users-> |_Node1__| |_Node2__| |__Node3_|     
+       |        |			
+	 Ingress    |        ____________
+	   |------->|________|_Cluster Ip_| 192.168.0.1
+                            
+				   ---------|-----------
+              _____|___	 ___|_____	 __|______			   
+             |________| |________|  |________|   
+			    p1         p2          p3
+			10.0.0.1      10.0.0.2    10.0.0.3	
+
+How do user connect to specifi application of the pod?
+ Its with the help of LABELS and SELECTOR
+                      -------
+                      manages by KUBE-CONTROLLER Manager
+
+Services run Independently, whihc used to communicate the users for any pod
+                            and of we remove also , there will be not effect on the pods/containers.
+
+iii. Load Balancer:
+      In every public cloud it will exists , we can directly connect tot he pods and expose.
+
+	  
+How can we create service:
+
+$kubectl expose <pods>
+$kubectl create service
+
+Service Ports:
+
+These ports available in yaml files
+
+ 1) Target port: -> pod
+ 2) Port: -> service
+ 3) nodeport:-> node
+
+              Service_port  Target_port
+    ________   ________     ________
+   |_Node1__| |_Nodeport_| |_pod1__|
+      |---------->||---------->|
+	  
+***************In realtime exposign of nodeport , we can only use internally 	  
+
+==============================================================================
+
+Day15: Networking |Managing K8's DNS:
+
+-> FOr every nodeport cluster IP is assiging.
+                      ----------
+					  which is defult services in K8's/
+					  
+->Only cluster IP's can communicate to Database and no nodeport will be accessed to the DB's.
+  which need to connect only with private n/w
+
+Cluster Ip's:
+
+By exposing to provate LB, we can give access to other users or the db access
+
+Load Balancer:
+
+-> Once the metalib  installed one IP will be assigned and through which acces the n/w of pods/applications.
+            -------
+			minikube addons
+			
+->If we have multiple applications, then we need to get installed LB(LB1,LB2...) for each applciation for the access
+
+Ingress:
+
+we can use for multiple applications(kind of Micro services for each category) context 
+  eg: Amazon
+      |
+	  --->is a app and under amazon we have cloths/shoes and etc..
+	  
+Kubernetes DNS:
+=============
+How we manage DNS in K8's?
+->If we have s many pods created with Ip address.
+->So in k8's we have CORE DNS
+                     --------
+                     It resolves Ip address to google.com
+  
+-> TOm check the DNS value of pod or application, check in kubernetes.io ->search DNS
+-> DNS default location is /et/resolv.conf
+
+raamu@raamu-VirtualBox:~$ kubectl exec -it nginx-bf5d5cf98-7wxk6 -- cat /etc/resolv.conf
+nameserver 10.96.0.10
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+raamu@raamu-VirtualBox:~$
+
+
+===================================================================================
+
+Day16: Kubernetes Ingress Service:
+                  --------
+				  Path Based/URL
+
+-> It will be used when we ned ot expose application to outside world.
+-> In Ingress, through Controller only Ingress works.
+                       ----------
+					   In background Load Balancer is attached.
+					                 -------------
+									 In AWS or any cloud , they will provide LB
+									 that means in evry cloud the LB act as an intermediator to Ingress to work.
+
+-> In minikube,if we need Controller , we need to enable through Addons
+-> IN Kubeadm: we need ot install controller , like NGINX(we have a lot of controllers in K8's.
+                                                    -----
+													by default we use it
+													
+
+	  
+	
+											
+											
+	        
+ accessing amazon.com       (API act as Intermediator               
+         ________            b/w ouside world and K8's world
+        |__User_|             
+            |      ________	  Ingress	                         _8080____   ________   ________
+             ----->|__DNS_|     API                             |_Node1__| |_Node2__| |__Node3_|     
+                     |      -Controller-                            |			
+                      ---->| on cloud  |                            |        ____________
+                           | with LB   |------------------------------------>|_Cluster Ip_| 192.168.0.1
+                           ------------                                      |  Nodeport  |
+						   this is happening outside            	   ---------|-----------
+						   the world                              _____|___	 ___|_____	 __|______		
+						                                         |________| |________|  |________|   
+                                                                    p1         p2          p3
+                                                                10.0.0.1      10.0.0.2    10.0.0.3	
+																
+																Kubernetes world
+																
+ How my K8's knows that it should connect to particular node?
+ A: ONce cluster IP is assigned to any of the pod, its done by API which runs on k8's seperately.
+    Behind the scenes API k8's will connect to pod.
+	
+=> Ingress only routes  http and https 	
+
+===============================================================
+
+Day17: Kubernetes Storage options | COnfigMaps:
+
+-> In k8's has Persistent Volume Claim(PVC) , which is API in K8's
+               ---------------------------
+			It workd using storage class & Persistent Voulume.
+        
+            bond with
+		PVC ---------->PV 
+		               ---
+					   It comes from storage class which is external volume
+					   
+-> K8's made this PVS as micro service which is micro service or isolated .
+   and mainly designed for the permanent storage, suppose if pod deleted the containers and associated volume will delete
+    TO overocme this K8 intriduced PVC   
+		
+-> PVc works on storage class and PV	
+-> PVC we directly moun on the pod , but in back scene pvc Bonds with PV  
+   and this PV omes from storages class(which is external storage)  
+                         -------------
+                         eg: IN AWS EBS
+						 
+-> If in case we do not have PV we need to create it manually  	like if PVS need 10gb of storage,
+   PVS goes an asks storage class then it creates PV and then assign it to the PVC	
+   ** so this all will be done automatically.
+
+-> Since we have PVC , if pod deleted also doesn't matter.Once we create the pod we can again connect to the same PVC.
+		
+		
+              POD
+            ----------- 		 
+            |  C1 c2  |       
+            | Volume  | 
+            | 	      | 
+             ---------- 
+			    |                       ________________        ____
+			    |    -----------------> |Storage Class|   ----> |PV| 
+			 ___|___|_                                            |
+             |__PVC_|  <---------------BOND---------------------------
+                        
+
+we ahve access mode as ReadWrite Once
+                       -------------
+
+Since we unable to d in minikube we use gcp for persistent volume claim:
+
+
+========================================================
+
+ConfigMaps & Secrets:
+
+ConfigMaps: no-encrypts
+
+-> to secure the environment variables & passwords:
+ like setting of environments and pasowrds shouldn't be naked
+ 
+SO to hide these kind of passowrd we use config maps
+
+In pod -> give env from configmap(where we give env/password/files/varibales) in it.
+         i.e application related configuration files 
+		 
+-> we shouldn't keep passwords in congfigmap , we can give in secrets which it encrypt the passowds
+
+Secrets: encrypts
+ 
+TO store the sensitive data.
+ 
+============================================================
+
+Day18: Secrets |K8 node Affinity |Pod Affinity|Pod Anti-Affinity:
+
+Secrets: 
+ 
+->TO store the sensitive data(passwords/authentication token/ssh keys).
+->By default while creating k8's some secrets will be created
+->But these seperate secrest will be useful to communicate within the cluster.
+                    --------
+					these are system created secrets.
+					Mostly used to communicate from one resource to another
+-> Secrets are ncrypted format.
+
+Types of secrets:
+
+1. Generic Version: which creates from file/directory/literal
+                                                      --------
+													  directly give values from command line
+
+2. TLS: whihc used to store key certificates.
+
+3.Docekr-Registry: used to connect to docker registry
+                  -> to access private Images from docker registry.
+
+TO create secret:
+                       Type:
+					   -----
+$kubectl create secret generic/TLS/Docker-registry
+
+* Secrets also combined through Service accounts to access pods.
+                                ----------------
+                                to give access from pod and restrict other pods
+
+* All most similar like configmaps
+  ->which sits ouside of deployment
+
+configmap and secrests will sit ouside the deployments.  
+
+****From inside of the pod we can check the password , so at kubernetes level only the passoword is encoded:
+
+
+Scheduler Options: 
+
+-> which manages by kube-scheduler             after filtering it euns scroting on remaining pods
+                    -------------              -------
+					which works using filters /scoring
+	                                  -------  -------
+									  checks feasibilites  like pod fits based on n/w ports,
+                                                                    host ports/resources/match node selector 
+																	checks node dist presssure(filesystem level)
+																	checks volumen boundings
+->which decides in which pod of node need to sit.
+   like we can use NODENAME and NODE SELECTOR , generally we use these when their is a compulsory requirement.
+   and some other options like affinity/anit-affinity/taints
+
+
+
+==============================================================================================================
+
+Affinity:
+
+Node Affinity:
+
+-> set the affinity rules on nodes
+
+Inter pod affinity:
+->set rules b/w pods
+
+=> Affinity has 2 types:
+ i.Required during scheduling Ignored during execution(Hard requirment which compulsory meet the rule)
+ ii.Preferred during scheduling Ignored during execution(Soft requirement which is good if it available/schedule as per the availability)
+    ---------
+	for this we can use weight 
+	                    ------
+						then it should work like hard requirement
+						
+			$kubectl explain pod.spec.affinity (gives the details of Affinity)
+			
+=>NOde Affinity: 
+           
+		   $kubectl explain pod.spec.affinity.nodeAffinity
+		   
+		  
+===========================================================================================================
+
+Pulling Image from Private REpository in Kubernetes:
+
+===========================================================================
+
+
+Day19:kubernetes Taint & Tolerations:
+
+Taint:
+
+Enabling on node 
+
+when we apply this on node pod doesn't accept in that node. 
+
+    eg: If we want to schedule any pod on the taint applied node, that pod will not schedule, 
+	    until and unless that pod have a tolerations. 
+
+3 types of Taints:
+
+->i.Noschedule: not scheduled any  new pods on nodes.
+ii. Prefer NOscheduel: NO new pods schedule on node but it accepts pods when other node resources are full
+iii. No execute: It migrate all pods to other nodes
+                 (NO matter how many pods running on node)
+
+******If Toleration enabled on POD above 3 taint types will not work***********				 
+
+Tolerations:
+
+Pod enabling
+
+-> while creating pod, we apply it if at all that node have taint.
+
+Basically , If taint applied in any node , that node doesn't accpet our pods.
+
+
+Difference b/w Affinites and Taints-toleratiosn:
+
+  Affinity                                     Taints-tolerations
+ ->we use this to attract the pods in          ->we use Taints to do not attract pod in node 
+   node.										  untill toleration in pod
+											   ->If Daemonset enabled this taint/tolerations attributes doesn't works.
+											   
+											   
+	
+
+               POD1               Node1
+           ----------- No accept  ---------
+           | Normal  |<-------->| Taint  |
+           |  pod    |  Accept  |  NO    |
+           | 	     |     ---->|Schedule| (attribute foe taint)
+            ---------      |      --------- 
+                 |         |      Accept
+				 ----------|-------------
+						   |			 |
+              POD2         |        Node2
+           -------------   |       ---------
+           |Tolearation|<---      |NO Taint|
+           |NOSchedule |          |Normal  |
+           | 	       |<-------->|Node    |
+            -----------  Accept    ---------
+			
+	->pod1 to node2 accepts    ->pod1 to node1  no accept
+    ->pod2 to node1 accepts
+    ->pod2 to node2  accepts	
+	
+===================================================================================
+
+
+Day20:Kubernetes RBAC | K8's service accounts:
+
+Security : 
+-> FOr using k8's , to access any API , API should have certificate.
+-> By  deafult the  API which runs on kubeadm runs with port no:6443 & for minikube:8443
+-> TO access any k8 related API's, we use to connect with kubectl and this acces to AOI through certificates.
+  
+    the location of certificate is at usr/.kube/config  
+                                      ----------------
+									  user related configuration file & certificates available.
+									  
+	        eg: kubectl create user ->user related confi file & certificates available
+			
+			    we don not have user objects in k8's that means we cnnot create user.
+				SO ffor this we use certificates for the users to connect.
+				
+				
+	How can we access the API's ?
+
+  -> Generally we have ,  2 ways
+        i. user based (through Client certificate)
+		ii. Service based (through Tokens)
+
+                             
+													------>Client certificate/password/tokens
+                                 ------------       | 
+				            	 |API Access|       | -----> the user should have the privileges to access
+			----------		 ---------------------  | |
+            | user    |     |  Authentication ------- |
+			| based   |---->|                     |   |
+			|         |     |  Authorization ----------   
+            | SErvice |---->|	                  |               ------
+            | based	  |     |  Admission Control  |-------------> |ETCD|
+             ---------      -----------|-----------                ------
+									   |
+									   ------>when try to access specific functions like quotas.
+Autherization:
+-------------
+1. ABAC: not using now
+2. RBAC: Once authorized , first it goes to kube-API server	
+         -> fot this we need to have master node -> /etc/kubernetes/manifests/kube-apiserver.yml
+		 
+		 
+Types of certificates:
+
+raamu@raamu-VirtualBox:~$ cd .kube/
+raamu@raamu-VirtualBox:~/.kube$ ls -ltr
+total 12
+drwxr-x--- 4 raamu raamu 4096 May  5 17:33 cache
+drwxr-xr-x 2 raamu raamu 4096 Aug 23 20:59 kubens
+-rw------- 1 raamu raamu  106 Aug 26 14:16 config
+raamu@raamu-VirtualBox:~/.kube$
+
+
+
+Below certificates available in .kube/ location.
+
+i. client-certificate-data : clinet public key certificate available
+ii. Client-key-data -> Client private key certificate
+iii. certificate-authority-data : Certificate Authority(CA) public key certifiacte	 
+	
+
+ steps to find in word doc to get details of how to get the key certificates and how he manages the pods.(18:00 mins)
+
+		 
+	To create the user related certificates:
+
+1.	So fetching the export related commands from .kube/
+2.	Base 64 -> we are fetching the pem certificates , its from the developer prospects
+                   Where developer do not have access to kubectl
+                    So developer will connect to certificate(pulling from config file)->API’s-> pods(to manage the pods)	
+
+RBAC: Role BAsed Access control
+
+
+
+    ------->ROle Binding                                      ------->Cluster Role binding
+    |                                                         |
+    |                                                         |
+    |       ------------k8 cluster----------------------      |       
+    |       |                 	                        |     |       
+    |       | ---Namespace--------   -----------------  |     |       
+    |       | | Roles            |   | cluster roles  | |     |       
+    ------->| | (with            |   |  (with         | |<-----
+            | |permissions)      |   | permissions)   | |  
+            | -------------------     ----------------- |  
+            --------------------------------------------
+			
+			Cluster Role:
+			-> If we need to acces anything in cluster, the user should be authorized, 
+               coz, users has set of permissions, like access 
+               i. List of nodes
+			   ii. Describe the nodes
+			   iii. delete the nodes and etc,,,
+			   
+              and also Around cluster wide 
+		       i. to manage namespace
+			   ii. pvc
+			   iii. Storage class
+			  
+			 not only wiht the namespace but also manages outside the namespace by using cluster Role. 
+			   
+			Roles:
+			
+			users under NS, need ot authernticate then we assign a role abd gives specific permissions like 
+			pods, services, deployments, statefulsets and etc..
+			----
+			for all these users has acces to run/delete/start/edit/acces/list
+			
+	->We need ot create a Role binding to communicate b/w roles and users.
+	->Likewise cluster role bindings for cluster role
+			
+Senario:
+
+-> create NS
+-> create user account			
+          -----
+		  should have his(user) own certificate credentials.
+		                 ------------------
+						 by using this  certificate user need ot acces RILE for which
+						 
+						 i.Need to create a role in NS
+						 ii.then create role binding
+						iii. then cwe can give access to user
+						
+						
+						NS -->  ROLE  -->> Role Binding
+		                         |
+                              user certificate credentials
+
+
+User certificate creation to access the Role:
+
+Since we do do not have user object in k8's 
+   users will connect through the certifiactes for which we need to follow the below steps:
+
+1. Firest , we need create public private key-pair to the user.
+2. create CSR(Certificate Signing Request)
+3. then sign the request.
+4. By using public private key pair , in config need ot create.
+5. then create RBAC Role
+6. then create RBAC ROLE Binding
+7. the we able to access the resources in Namespace.
+
+*when we using cloud env based for kubectl, by deault cloud evv will assigned to kubectl.
+
+=> But when we working on minikube or Kubeadm, If we want to acces through wiht any other user we need
+   to follow above 7 steps.
+
+=>If we need ot assign certificates in cloud env we can directly create Role Binding or Cluster Role Binding.
+
+   
+Service accounts:
+ ---------------
+ works on tokens
+ 
+ $kubctl get sa -----------------> by default we have one sa
+ $kubectl describe sa default
+	
+service based like ,
+  eg: if we need to create a EC2, which we can trigger these service using terraform script	
+  
+  
+===============================================================================================
+
+Day21: Kubernetes NOde Management | Troubleshooting steps:
+
+Node Reboot:
+
+Pre-requisites:
+**If we nor follow the pre-requisites steps, sometimes node will be struck where we cannot do the reboot.
+
+Senatios:1
+
+If one application Spaqning/running on the cluster node with 3  pods or more.
+
+-> During the reboot , we need to ensure no new pods will be created or NoScheduled on teh node.
+->we will run below command
+  $kubectl cordon <nodename>
+                  ----------
+				  It will stop scheduling new pods on the node 1 , then it will move on to the node2..
+->And then evict or remove everything
+  $kubectl drain
+           -----
+		   -> It will remove everything and no new pods will nbe scheduled as we applied cordon
+																						 ------
+		   ->these delete pods, will move & sit on the other availabel node.
+-> Then we do reboot
+              ------
+            ->Once this fired, node automatically register/join the cluster
+            -> And the registration is a default setting available in k8's.
+			-> Default Registration setting will takecare of kubectl service, this kubectl will g and sits on the cluster node.
+			                                                 -------               -------
+															 
+execrsice:
+
+$kubectl create deploy nodes --image=nginx replicas=6
+$kubectl get nodes
+$kubectl get pods -o wide
+
+cordon & drain:
+
+$kubectl cordon	<node name> ( it will not create any pod on the mentioned node)
+
+$kubectl scale deploy nodes --replicas=3 (extra 3 pods and as we already given cordon , 
+                                          so the pods will sit in the node on those cordon not created)
+
+$kubectl drain <cordon node name> --force --ignore-daemonsets
+         -----
+		 we can apply directly without going to corndon first, if the node is unscheduled & evict
+		 -> Drain: it will evicts all pods in the mentioned node.
+
+To revers the changes:
+
+$kubectl uncordon <node name>
+         ---------
+         (it will stop drain and cordon)
+$kubectl get nodes
+$kubectl scale deploy nodes --replicas=9
+                              (already 6 pods initiatedm so 3 will be appended to the nodes)
+
+**********
+If we need to do on AWS, we do it through AWS CLI
+If we do on kubeadm, we need to use ($systemctl kubelet status)
+        
+		$kubeadm reset (which will reboot)
+		
+********
+
+Afer reboot , make sure kubelet is up and running
+
+How to check this?
+
+$systemctl kubelet status
+  
+   (to the the status of the node, we need to have access for this AWS admin team will help)
+   
+
+Troubeshooting Strategies:
+========================
+
+background process of creating the pods:
+
+   $Kubectl run                     ------------> kubectl describe
+         |                          |            
+		 |                          |              |       |
+		\/                          |              |       |
+     -----------          1         |              |       |
+     |API-server| <------------------              |       |
+     ------------                                  |       |
+          | 	                                   |       |
+          |                                        |       |
+         \/                                        |       |
+	-------------                                  |       |
+	| ETCD      |                                  |       |
+    -------------                                  |       |
+           |	                                   |       |
+           |                                       |       |
+          \/                                       |       |
+    ------------------          2                  |       |
+	| Kube-scheduler  | <--------------------------        |
+	------------------                                     |
+	      | 	                                           |
+	      |	                                               |
+         \/                                                |
+    ----------                    3                        |
+	|kubelet |  <------------------------------------------
+	----------
+	checks on node whether kubelet service is running and then create teh container/pod
+                           --------------	
+	
+
+So after creating pod, what to do if we get issue in creating the pod:
+
+step 1:
+
+ $kubectl describe
+    first, get teh information from API-serve
+    then from the Kube-Scheduler 
+    then from  kubelet	
+
+
+If it is from the application issue:
+====================================
+
+$kubectl logs <>pod/container name>
+         -----
+		 to goes to the running container and fetchs the information.
+		 
+
+While deploying , if we get any issues POD will go into different stages:
+=======================================================================
+This is faiing of pod:
+
+1. Pending stage:
+   i. pod will be validated by API server
+   ii. pos enters in ETCD
+   iii. then looks for pre-requisites conditions.
+                       --------------
+					   where it fails, then pod goes to pending state.
+					   
+2. Running stage:
+    i. If pre-requisites success, then it goes into running state..
+	
+3. COmpleted:
+  i. If we give some tast to pod, then it goes into completed state,
+  
+4. Failed:
+   i. Pod finished it job but something went wrong like at application or events
+      then we need to check 
+	      ->describe/events
+		  ->logs        
+5.Crashloopbackoff:
+   i. cluster restarts
+   ii.password issue.
+   iii.when we donot have required resources.
+   
+6. Unkonw:
+  i. pod state goes to unknown
+         ----
+		 again checks teh describe/events/logs
+		 
+
+Overall:
+
+decribe/events ->cluster/nodelevel
+logs ->application/pod level
+exit codes
+if 0 ->success
+if 1 ->some isssues at application end.
+
+and other than 0 is also issue.
+
+Types of issues:
+==============
+
+Senario:1 creating deployment without mentioned task (sleep 3600)
+
+Error:Crashloopbackoff error:
+
+raamu@raamu-VirtualBox:~$ kubectl create deploy failure1 --image=busybox
+deployment.apps/failure1 created
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS              RESTARTS   AGE
+failure1-54d599b8bc-m2smd   0/1     ContainerCreating   0          7s
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS              RESTARTS   AGE
+failure1-54d599b8bc-m2smd   0/1     ContainerCreating   0          11s
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS              RESTARTS   AGE
+failure1-54d599b8bc-m2smd   0/1     ContainerCreating   0          15s
+
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS      RESTARTS   AGE
+failure1-54d599b8bc-m2smd   0/1     Completed   1          36s
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS             RESTARTS      AGE
+failure1-54d599b8bc-m2smd   0/1     CrashLoopBackOff   1 (11s ago)   43s
+raamu@raamu-VirtualBox:~$ kubectl describe pod failure1-54d599b8bc-m2smd
+Name:             failure1-54d599b8bc-m2smd
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 28 Aug 2024 12:26:38 +0530
+Labels:           app=failure1
+                  pod-template-hash=54d599b8bc
+Annotations:      cni.projectcalico.org/containerID: ca57ee8f96ba108ac547da57857f8e2d1215f0b4093f088ade797ae70cc084d4
+                  cni.projectcalico.org/podIP: 10.244.120.80/32
+                  cni.projectcalico.org/podIPs: 10.244.120.80/32
+Status:           Running
+IP:               10.244.120.80
+IPs:
+  IP:           10.244.120.80
+Controlled By:  ReplicaSet/failure1-54d599b8bc
+Containers:
+  busybox:
+    Container ID:   docker://e5c6080c18adeeea65d27b3a1d1ee9e65333465ed33d6392c4f79baa330aee1a
+    Image:          busybox
+    Image ID:       docker-pullable://busybox@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 28 Aug 2024 12:27:09 +0530
+      Finished:     Wed, 28 Aug 2024 12:27:09 +0530
+    Ready:          False
+    Restart Count:  1
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-nrj65 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       False
+  ContainersReady             False
+  PodScheduled                True
+Volumes:
+  kube-api-access-nrj65:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  51s                default-scheduler  Successfully assigned default/failure1-54d599b8bc-m2smd to minikube
+  Normal   Pulled     33s                kubelet            Successfully pulled image "busybox" in 5.733s (5.733s including waiting). Image size: 4261574 bytes.
+  Normal   Created    25s (x2 over 32s)  kubelet            Created container busybox
+  Normal   Pulled     25s                kubelet            Successfully pulled image "busybox" in 3.75s (3.75s including waiting). Image size: 4261574 bytes.
+  Normal   Started    19s (x2 over 30s)  kubelet            Started container busybox
+  Warning  BackOff    16s (x2 over 18s)  kubelet            Back-off restarting failed container busybox in pod failure1-54d599b8bc-m2smd_default(2a56efdb-7f29-4f4b-9607-7e3cc2c8dfee)
+  Normal   Pulling    2s (x3 over 39s)   kubelet            Pulling image "busybox"
+raamu@raamu-VirtualBox:~$
+
+
+REcreating teh issue with tasks:
+===============================
+
+
+raamu@raamu-VirtualBox:~$ kubectl create deploy failure1 --image=busybox -- sleep 3600
+deployment.apps/failure1 created                                            ----------
+                                                                            which runs for 1 hour and restarts after 1 hour
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS              RESTARTS   AGE
+failure1-8654d49568-httcx   0/1     ContainerCreating   0          4s
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS              RESTARTS   AGE
+failure1-8654d49568-httcx   0/1     ContainerCreating   0          12s
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+failure1-8654d49568-httcx   1/1     Running   0          19s
+raamu@raamu-VirtualBox:~$ kubectl describe pod failure1-8654d49568-httcx
+Name:             failure1-8654d49568-httcx
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 28 Aug 2024 12:36:03 +0530
+Labels:           app=failure1
+                  pod-template-hash=8654d49568
+Annotations:      cni.projectcalico.org/containerID: 786402170e7bd811babcd2f92abe3ae7950443ae513985d194996c961a6c8ba3
+                  cni.projectcalico.org/podIP: 10.244.120.74/32
+                  cni.projectcalico.org/podIPs: 10.244.120.74/32
+Status:           Running
+IP:               10.244.120.74
+IPs:
+  IP:           10.244.120.74
+Controlled By:  ReplicaSet/failure1-8654d49568
+Containers:
+  busybox:
+    Container ID:  docker://e82d3d6df8eb15a82de226b7aa94cba5f7ffd274cc28fbbc6c1a29ba5c1c836d
+    Image:         busybox
+    Image ID:      docker-pullable://busybox@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sleep
+      3600
+    State:          Running
+      Started:      Wed, 28 Aug 2024 12:36:18 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6hp4b (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-6hp4b:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age   From               Message
+  ----     ------       ----  ----               -------
+  Normal   Scheduled    40s   default-scheduler  Successfully assigned default/failure1-8654d49568-httcx to minikube
+  Warning  FailedMount  39s   kubelet            MountVolume.SetUp failed for volume "kube-api-access-6hp4b" : failed to sync configmap cache: timed out waiting for the condition
+  Normal   Pulling      32s   kubelet            Pulling image "busybox"
+  Normal   Pulled       28s   kubelet            Successfully pulled image "busybox" in 3.336s (3.336s including waiting). Image size: 4261574 bytes.
+  Normal   Created      28s   kubelet            Created container busybox
+  Normal   Started      25s   kubelet            Started container busybox
+raamu@raamu-VirtualBox:~$
+
+
+
+=======================================================================
+
+Application related issue:
+
+Senario: 2
+
+creating deployment without mentioning the database prefix password for the database pod
+
+
+raamu@raamu-VirtualBox:~$ kubectl create deploy failure2 --image=mariadb
+deployment.apps/failure2 created
+
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                       READY   STATUS              RESTARTS   AGE
+failure2-c95f8fb4b-xwd56   0/1     ContainerCreating   0          9s
+
+raamu@raamu-VirtualBox:~$ kubectl get pods -o wide
+NAME                       READY   STATUS    RESTARTS      AGE   IP              NODE       NOMINATED NODE   READINESS GATES
+failure2-c95f8fb4b-xwd56   1/1     Running   1 (10s ago)   28s   10.244.120.70   minikube   <none>           <none>
+raamu@raamu-VirtualBox:~$ kubectl get pods -o wide
+NAME                       READY   STATUS   RESTARTS      AGE   IP              NODE       NOMINATED NODE   READINESS GATES
+failure2-c95f8fb4b-xwd56   0/1     Error    1 (21s ago)   39s   10.244.120.70   minikube   <none>           <none>
+raamu@raamu-VirtualBox:~$
+
+raamu@raamu-VirtualBox:~$ kubectl describe pod failure2-c95f8fb4b-xwd56
+\Name:             failure2-c95f8fb4b-xwd56
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 28 Aug 2024 12:40:30 +0530
+Labels:           app=failure2
+                  pod-template-hash=c95f8fb4b
+Annotations:      cni.projectcalico.org/containerID: 02d0322990b363050a2e1f32f17aabc3c8126ee4b664bbe9d338087742b5db47
+                  cni.projectcalico.org/podIP: 10.244.120.70/32
+                  cni.projectcalico.org/podIPs: 10.244.120.70/32
+Status:           Running
+IP:               10.244.120.70
+IPs:
+  IP:           10.244.120.70
+Controlled By:  ReplicaSet/failure2-c95f8fb4b
+Containers:
+  mariadb:
+    Container ID:   docker://16714ee9d91e487ce9953ce97fa008e7b9efad27ce50f0d8d5e88680d4ff84ec
+    Image:          mariadb
+    Image ID:       docker-pullable://mariadb@sha256:4b812bbd9a025569fbe5a7a70e4a3cd3af53aa36621fecb1c2e108af2113450a
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1 ------------------------------------------->clearly shows the error
+      Started:      Wed, 28 Aug 2024 12:41:21 +0530
+      Finished:     Wed, 28 Aug 2024 12:41:25 +0530
+    Ready:          False
+    Restart Count:  2
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hxlpg (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       False
+  ContainersReady             False
+  PodScheduled                True
+Volumes:
+  kube-api-access-hxlpg:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  78s                default-scheduler  Successfully assigned default/failure2-c95f8fb4b-xwd56 to minikube
+  Normal   Pulled     69s                kubelet            Successfully pulled image "mariadb" in 3.965s (3.965s including waiting). Image size: 406905275 bytes.
+  Normal   Pulled     55s                kubelet            Successfully pulled image "mariadb" in 3.49s (3.49s including waiting). Image size: 406905275 bytes.
+  Normal   Pulling    33s (x3 over 73s)  kubelet            Pulling image "mariadb"
+  Normal   Created    29s (x3 over 69s)  kubelet            Created container mariadb
+  Normal   Pulled     29s                kubelet            Successfully pulled image "mariadb" in 3.659s (3.659s including waiting). Image size: 406905275 bytes.
+  Normal   Started    27s (x3 over 67s)  kubelet            Started container mariadb
+  Warning  BackOff    10s (x3 over 44s)  kubelet            Back-off restarting failed container mariadb in pod failure2-c95f8fb4b-xwd56_default(d38170e0-75a6-4023-abfb-4803e702c0d7)
+
+
+then go to check the logs:
+=======================
+
+raamu@raamu-VirtualBox:~$ kubectl logs failure2-c95f8fb4b-xwd56
+2024-08-28 07:14:36+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.5.2+maria~ubu2404 started.
+2024-08-28 07:14:38+00:00 [Warn] [Entrypoint]: /sys/fs/cgroup///memory.pressure not writable, functionality unavailable to MariaDB
+2024-08-28 07:14:38+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2024-08-28 07:14:39+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.5.2+maria~ubu2404 started.
+2024-08-28 07:14:40+00:00 [ERROR] [Entrypoint]: Database is uninitialized and password option is not specified
+        You need to specify one of MARIADB_ROOT_PASSWORD, MARIADB_ROOT_PASSWORD_HASH, MARIADB_ALLOW_EMPTY_ROOT_PASSWORD and MARIADB_RANDOM_ROOT_PASSWORD
+raamu@raamu-VirtualBox:~$
+
+clearly shows the password issue
+-----------------------------------
+
+raamu@raamu-VirtualBox:~$ kubectl get all
+NAME                           READY   STATUS             RESTARTS      AGE
+pod/failure2-c95f8fb4b-xwd56   0/1     CrashLoopBackOff   5 (74s ago)   5m24s
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   23h
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/failure2   0/1     1            0           5m25s
+
+NAME                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/failure2-c95f8fb4b   1         1         0       5m26s  --------------------->shows it not ready
+raamu@raamu-VirtualBox:~$
+
+Recreating the issue with passowrd(this can be added manually in the yaml also)
+===========================
+
+raamu@raamu-VirtualBox:~$ kubectl set env deploy failure2 MYSQL_ROOT_PASSWORD=password
+deployment.apps/failure2 env updated
+
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS        RESTARTS   AGE
+failure2-5c9fdd4d76-c245q   1/1     Running       0          14s
+failure2-898b7b5-wmvb8      0/1     Terminating   4          3m30s --> this one will be deleted.
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+failure2-5c9fdd4d76-c245q   1/1     Running   0          27s
+raamu@raamu-VirtualBox:~$
+
+
+raamu@raamu-VirtualBox:~$ kubectl get all
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/failure2-5c9fdd4d76-c245q   1/1     Running   0          2m16s
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   24h
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/failure2   1/1     1            1           13m
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/failure2-5c9fdd4d76   1         1         1       2m16s--------------------->available shows up and running
+replicaset.apps/failure2-898b7b5      0         0         0       5m32s---------------------> old deploy
+replicaset.apps/failure2-c95f8fb4b    0         0         0       13m---------------------> old deploy
+raamu@raamu-VirtualBox:~$
+
+=-====================================-------------------=====================
+
+Senario:3 Pod access Issue( when we expose certin pods to internet or for users)
+
+-> pods are exposed by using Load Balancer.
+                             -------------
+							 SO first we need ot check LB at services like does it LB,
+							 like does it LB went to pending status or still showing the IP add.
+
+-> And also when we need to access the backend pods, the major thing when we trying to access pods through service
+  then first thing we need to check the 1. LABLES
+                                        2. Selectors
+		$kubectl get pods (gives the labels end points whether the endpoints properly matching or not)
+		
+-> Also check the INGRESS , like n/w policies enabled.
+
+     eg: when we try to connect from one pod to other pod
+	 
+	 $kubectl get network policy/netpol -ABAC
+	 $kubectl create deploy trouble --image=nginx
+	 $kubectl get pods
+	 
+excersice:
+
+raamu@raamu-VirtualBox:~$ kubectl create deploy trouble --image=nginx
+deployment.apps/trouble created
+
+expose the pod:
+
+raamu@raamu-VirtualBox:~$ kubectl expose deploy trouble --port=80 --type=NodePort
+service/trouble exposed
+raamu@raamu-VirtualBox:~$
+
+exposed to NODEPORT
+
+raamu@raamu-VirtualBox:~$ kubectl get pods,svc
+NAME                           READY   STATUS    RESTARTS   AGE
+pod/trouble-7978bd5f7c-m98jt   1/1     Running   0          2m22s
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        5m26s
+service/trouble      NodePort    10.109.13.183   <none>        80:32124/TCP   69s------------------------>use this port to curl to expose
+raamu@raamu-VirtualBox:~$
+
+check the endpoints: shows trouble is connected to one of the pod
+
+raamu@raamu-VirtualBox:~$ kubectl get ep
+NAME         ENDPOINTS           AGE
+kubernetes   192.168.49.2:8443   6m7s
+trouble      10.244.120.68:80    109s
+
+check the pod with ep: shows the IP add of pod 
+
+raamu@raamu-VirtualBox:~$ kubectl get pod -o wide
+NAME                       READY   STATUS    RESTARTS   AGE     IP              NODE       NOMINATED NODE   READINESS GATES
+trouble-7978bd5f7c-m98jt   1/1     Running   0          3m12s   10.244.120.68   minikube   <none>           <none>
+raamu@raamu-VirtualBox:~$
+
+
+give the exposed port number: curl which confirms that nginx is able to acces the exposed pod
+
+raamu@raamu-VirtualBox:~$ curl $(minikube ip):32124
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+raamu@raamu-VirtualBox:~$
+
+raamu@raamu-VirtualBox:~$ kubectl get service
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        12m
+trouble      NodePort    10.109.13.183   <none>        80:32124/TCP   8m3s
+raamu@raamu-VirtualBox:~$
+
+
+Edit the service: to create the troubelshooting the accessing the pod 
+
+raamu@raamu-VirtualBox:~$ kubectl edit svc trouble
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2024-08-28T08:34:33Z"
+  labels:
+    app: trouble --------------------------------------->change to Trouble
+  name: trouble
+  namespace: default
+  resourceVersion: "119869"
+  uid: 5aae7261-1907-4333-afe0-99a9be1575b6
+spec:
+  clusterIP: 10.109.13.183
+  clusterIPs:
+  - 10.109.13.183
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 32124
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: trouble  --------------------------------------->change to Trouble
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
+~
+
+
+throughs error of exposed pod since we have changed the selector and labels app:
+
+raamu@raamu-VirtualBox:~$ curl $(minikube ip):32124
+curl: (7) Failed to connect to 192.168.49.2 port 32124 after 0 ms: Couldn't connect to server
+raamu@raamu-VirtualBox:~$
+
+
+If we check the endpoints , it shows no Ip
+
+raamu@raamu-VirtualBox:~$ kubectl get ep
+NAME         ENDPOINTS           AGE
+kubernetes   192.168.49.2:8443   17m
+trouble      <none>              13m
+raamu@raamu-VirtualBox:~$
+
+
+
+=============================================
+
+Senario :4 Cluster level Issues.
+
+shows everything what is going on cluster:
+
+raamu@raamu-VirtualBox:~$ kubectl get events
+LAST SEEN   TYPE      REASON              OBJECT                           MESSAGE
+25m         Normal    Killing             pod/failure2-5c9fdd4d76-c245q    Stopping container mariadb
+25m         Warning   FailedKillPod       pod/failure2-5c9fdd4d76-c245q    error killing pod: failed to "KillPodSandbox" for "7d6b84f4-9cc0-4e03-810f-d36282853eb4" with KillPodSandboxError: "rpc error: code = Unknown desc = networkPlugin cni failed to teardown pod \"failure2-5c9fdd4d76-c245q_default\" network: plugin type=\"calico\" failed (delete): error getting ClusterInformation: Get \"https://10.96.0.1:443/apis/crd.projectcalico.org/v1/clusterinformations/default\": dial tcp 10.96.0.1:443: i/o timeout"
+25m         Normal    Scheduled           pod/failure2-5c9fdd4d76-nvqcz    Successfully assigned default/failure2-5c9fdd4d76-nvqcz to minikube
+25m         Normal    Pulling             pod/failure2-5c9fdd4d76-nvqcz    Pulling image "mariadb"
+25m         Normal    Pulled              pod/failure2-5c9fdd4d76-nvqcz    Successfully pulled image "mariadb" in 3.986s (3.986s including waiting). Image size: 406905275 bytes.
+25m         Normal    Created             pod/failure2-5c9fdd4d76-nvqcz    Created container mariadb
+25m         Normal    Started             pod/failure2-5c9fdd4d76-nvqcz    Started container mariadb
+25m         Normal    Killing             pod/failure2-5c9fdd4d76-nvqcz    Stopping container mariadb
+25m         Normal    SuccessfulCreate    replicaset/failure2-5c9fdd4d76   Created pod: failure2-5c9fdd4d76-nvqcz
+22m         Normal    Scheduled           pod/trouble-7978bd5f7c-m98jt     Successfully assigned default/trouble-7978bd5f7c-m98jt to minikube
+22m         Normal    Pulling             pod/trouble-7978bd5f7c-m98jt     Pulling image "nginx"
+22m         Normal    Pulled              pod/trouble-7978bd5f7c-m98jt     Successfully pulled image "nginx" in 3.569s (3.569s including waiting). Image size: 187694648 bytes.
+22m         Normal    Created             pod/trouble-7978bd5f7c-m98jt     Created container nginx
+22m         Normal    Started             pod/trouble-7978bd5f7c-m98jt     Started container nginx
+22m         Normal    SuccessfulCreate    replicaset/trouble-7978bd5f7c    Created pod: trouble-7978bd5f7c-m98jt
+22m         Normal    ScalingReplicaSet   deployment/trouble               Scaled up replica set trouble-7978bd5f7c to 1
+raamu@raamu-VirtualBox:~$
+
+If we want to tchcek the particualr pod events by describe , we can see
+
+
+
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+trouble-7978bd5f7c-m98jt   1/1     Running   0          24m
+raamu@raamu-VirtualBox:~$ kubectl describe pod trouble-7978bd5f7c-m98jt
+Name:             trouble-7978bd5f7c-m98jt
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 28 Aug 2024 14:03:20 +0530
+Labels:           app=trouble
+                  pod-template-hash=7978bd5f7c
+Annotations:      cni.projectcalico.org/containerID: 98e1ca2858b860416ba8c3e1fc26f2704de65c5561d1c05e79ddf30d8a838d47
+                  cni.projectcalico.org/podIP: 10.244.120.68/32
+                  cni.projectcalico.org/podIPs: 10.244.120.68/32
+Status:           Running
+IP:               10.244.120.68
+IPs:
+  IP:           10.244.120.68
+Controlled By:  ReplicaSet/trouble-7978bd5f7c
+Containers:
+  nginx:
+    Container ID:   docker://5fff68645de32409185e25c80f88aaf4321513383813be88a8bd94af706bebae
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:447a8665cc1dab95b1ca778e162215839ccbb9189104c79d7ec3a81e14577add
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 28 Aug 2024 14:03:33 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-kqhf9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-kqhf9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  24m   default-scheduler  Successfully assigned default/trouble-7978bd5f7c-m98jt to minikube
+  Normal  Pulling    24m   kubelet            Pulling image "nginx"
+  Normal  Pulled     24m   kubelet            Successfully pulled image "nginx" in 3.569s (3.569s including waiting). Image size: 187694648 bytes.
+  Normal  Created    24m   kubelet            Created container nginx
+  Normal  Started    24m   kubelet            Started container nginx
+raamu@raamu-VirtualBox:~$
+
+
+shows particular node object, sub- object , source &  message:
+                              -----------
+							  If we not understand, then we can also check in describe(which shows the object level envents)
+$kubectl get events -o wide
+
+raamu@raamu-VirtualBox:~$ kubectl get events -o wide
+LAST SEEN   TYPE      REASON              OBJECT                           SUBOBJECT                  SOURCE                  MESSAGE                                                                                                                                                                                                                                                                                                                                                                                                                                                FIRST SEEN   COUNT   NAME
+31m         Normal    Killing             pod/failure2-5c9fdd4d76-c245q    spec.containers{mariadb}   kubelet, minikube       Stopping container mariadb                                                                                                                                                                                                                                                                                                                                                                                                                             31m          1       failure2-5c9fdd4d76-c245q.17efd736b5d442cd
+30m         Warning   FailedKillPod       pod/failure2-5c9fdd4d76-c245q                               kubelet, minikube       error killing pod: failed to "KillPodSandbox" for "7d6b84f4-9cc0-4e03-810f-d36282853eb4" with KillPodSandboxError: "rpc error: code = Unknown desc = networkPlugin cni failed to teardown pod \"failure2-5c9fdd4d76-c245q_default\" network: plugin type=\"calico\" failed (delete): error getting ClusterInformation: Get \"https://10.96.0.1:443/apis/crd.projectcalico.org/v1/clusterinformations/default\": dial tcp 10.96.0.1:443: i/o timeout"   30m          1       failure2-5c9fdd4d76-c245q.17efd73f4227522b
+31m         Normal    Scheduled           pod/failure2-5c9fdd4d76-nvqcz                               default-scheduler       Successfully assigned default/failure2-5c9fdd4d76-nvqcz to minikube                                                                                                                                                                                                                                                                                                                                                                                    31m          1       failure2-5c9fdd4d76-nvqcz.17efd736d8c6d724
+30m         Normal    Pulling             pod/failure2-5c9fdd4d76-nvqcz    spec.containers{mariadb}   kubelet, minikube       Pulling image "mariadb"                                                                                                                                                                                                                                                                                                                                                                                                                                30m          1       failure2-5c9fdd4d76-nvqcz.17efd738ac17f3ab
+30m         Normal    Pulled              pod/failure2-5c9fdd4d76-nvqcz    spec.containers{mariadb}   kubelet, minikube       Successfully pulled image "mariadb" in 3.986s (3.986s including waiting). Image size: 406905275 bytes.                                                                                                                                                                                                                                                                                                                                                 30m          1       failure2-5c9fdd4d76-nvqcz.17efd73999b5df7d
+30m         Normal    Created             pod/failure2-5c9fdd4d76-nvqcz    spec.containers{mariadb}   kubelet, minikube       Created container mariadb                                                                                                                                                                                                                                                                                                                                                                                                                              30m          1       failure2-5c9fdd4d76-nvqcz.17efd739b07a3d8a
+30m         Normal    Started             pod/failure2-5c9fdd4d76-nvqcz    spec.containers{mariadb}   kubelet, minikube       Started container mariadb                                                                                                                                                                                                                                                                                                                                                                                                                              30m          1       failure2-5c9fdd4d76-nvqcz.17efd73a4c0f9aec
+30m         Normal    Killing             pod/failure2-5c9fdd4d76-nvqcz    spec.containers{mariadb}   kubelet, minikube       Stopping container mariadb                                                                                                                                                                                                                                                                                                                                                                                                                             30m          1       failure2-5c9fdd4d76-nvqcz.17efd73eda5deff7
+31m         Normal    SuccessfulCreate    replicaset/failure2-5c9fdd4d76                              replicaset-controller   Created pod: failure2-5c9fdd4d76-nvqcz                                                                                                                                                                                                                                                                                                                                                                                                                 31m          1       failure2-5c9fdd4d76.17efd736cc823e3c
+27m         Normal    Scheduled           pod/trouble-7978bd5f7c-m98jt                                default-scheduler       Successfully assigned default/trouble-7978bd5f7c-m98jt to minikube                                                                                                                                                                                                                                                                                                                                                                                     27m          1       trouble-7978bd5f7c-m98jt.17efd76292301ce3
+27m         Normal    Pulling             pod/trouble-7978bd5f7c-m98jt     spec.containers{nginx}     kubelet, minikube       Pulling image "nginx"                                                                                                                                                                                                                                                                                                                                                                                                                                  27m          1       trouble-7978bd5f7c-m98jt.17efd76434792e42
+27m         Normal    Pulled              pod/trouble-7978bd5f7c-m98jt     spec.containers{nginx}     kubelet, minikube       Successfully pulled image "nginx" in 3.569s (3.569s including waiting). Image size: 187694648 bytes.                                                                                                                                                                                                                                                                                                                                                   27m          1       trouble-7978bd5f7c-m98jt.17efd765093f9b5e
+27m         Normal    Created             pod/trouble-7978bd5f7c-m98jt     spec.containers{nginx}     kubelet, minikube       Created container nginx                                                                                                                                                                                                                                                                                                                                                                                                                                27m          1       trouble-7978bd5f7c-m98jt.17efd7652bca8c9c
+27m         Normal    Started             pod/trouble-7978bd5f7c-m98jt     spec.containers{nginx}     kubelet, minikube       Started container nginx                                                                                                                                                                                                                                                                                                                                                                                                                                27m          1       trouble-7978bd5f7c-m98jt.17efd7658df472b1
+27m         Normal    SuccessfulCreate    replicaset/trouble-7978bd5f7c                               replicaset-controller   Created pod: trouble-7978bd5f7c-m98jt                                                                                                                                                                                                                                                                                                                                                                                                                  27m          1       trouble-7978bd5f7c.17efd7628a7b676b
+27m         Normal    ScalingReplicaSet   deployment/trouble                                          deployment-controller   Scaled up replica set trouble-7978bd5f7c to 1                                                                                                                                                                                                                                                                                                                                                                                                          27m          1       trouble.17efd76283542d4a
+raamu@raamu-VirtualBox:~$
+
+It shows the deployment events:(object level events)
+
+raamu@raamu-VirtualBox:~$ kubectl describe deploy trouble
+Name:                   trouble
+Namespace:              default
+CreationTimestamp:      Wed, 28 Aug 2024 14:03:20 +0530
+Labels:                 app=trouble
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=trouble
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=trouble
+  Containers:
+   nginx:
+    Image:         nginx
+    Port:          <none>
+    Host Port:     <none>
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   trouble-7978bd5f7c (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  31m   deployment-controller  Scaled up replica set trouble-7978bd5f7c to 1
+raamu@raamu-VirtualBox:~$
+
+
+It shows the pod events:
+
+raamu@raamu-VirtualBox:~$ kubectl describe pod  trouble
+Name:             trouble-7978bd5f7c-m98jt
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 28 Aug 2024 14:03:20 +0530
+Labels:           app=trouble
+                  pod-template-hash=7978bd5f7c
+Annotations:      cni.projectcalico.org/containerID: 98e1ca2858b860416ba8c3e1fc26f2704de65c5561d1c05e79ddf30d8a838d47
+                  cni.projectcalico.org/podIP: 10.244.120.68/32
+                  cni.projectcalico.org/podIPs: 10.244.120.68/32
+Status:           Running
+IP:               10.244.120.68
+IPs:
+  IP:           10.244.120.68
+Controlled By:  ReplicaSet/trouble-7978bd5f7c
+Containers:
+  nginx:
+    Container ID:   docker://5fff68645de32409185e25c80f88aaf4321513383813be88a8bd94af706bebae
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:447a8665cc1dab95b1ca778e162215839ccbb9189104c79d7ec3a81e14577add
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 28 Aug 2024 14:03:33 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-kqhf9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-kqhf9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  32m   default-scheduler  Successfully assigned default/trouble-7978bd5f7c-m98jt to minikube
+  Normal  Pulling    32m   kubelet            Pulling image "nginx"
+  Normal  Pulled     32m   kubelet            Successfully pulled image "nginx" in 3.569s (3.569s including waiting). Image size: 187694648 bytes.
+  Normal  Created    32m   kubelet            Created container nginx
+  Normal  Started    32m   kubelet            Started container nginx
+
+raamu@raamu-VirtualBox:~$
+
+TO check the cluster level events:
+
+raamu@raamu-VirtualBox:~$ kubectl get events | grep error
+37m         Warning   FailedKillPod       pod/failure2-5c9fdd4d76-c245q    error killing pod: failed to "KillPodSandbox" for "7d6b84f4-9cc0-4e03-810f-d36282853eb4" with KillPodSandboxError: "rpc error: code = Unknown desc = networkPlugin cni failed to teardown pod \"failure2-5c9fdd4d76-c245q_default\" network: plugin type=\"calico\" failed (delete): error getting ClusterInformation: Get \"https://10.96.0.1:443/apis/crd.projectcalico.org/v1/clusterinformations/default\": dial tcp 10.96.0.1:443: i/o timeout"
+raamu@raamu-VirtualBox:~$ kubectl get events | grep warning
+raamu@raamu-VirtualBox:~$ kubectl get events | grep -i warning
+37m         Warning   FailedKillPod       pod/failure2-5c9fdd4d76-c245q    error killing pod: failed to "KillPodSandbox" for "7d6b84f4-9cc0-4e03-810f-d36282853eb4" with KillPodSandboxError: "rpc error: code = Unknown desc = networkPlugin cni failed to teardown pod \"failure2-5c9fdd4d76-c245q_default\" network: plugin type=\"calico\" failed (delete): error getting ClusterInformation: Get \"https://10.96.0.1:443/apis/crd.projectcalico.org/v1/clusterinformations/default\": dial tcp 10.96.0.1:443: i/o timeout"
+raamu@raamu-Vi
+
+
+Getting access Issues:
+
+
+raamu@raamu-VirtualBox:~$ kubectl config view
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /home/raamu/.minikube/ca.crt
+    extensions:
+    - extension:
+        last-update: Wed, 28 Aug 2024 12:24:58 IST
+        provider: minikube.sigs.k8s.io
+        version: v1.33.0
+      name: cluster_info
+    server: https://192.168.49.2:8443
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    extensions:
+    - extension:
+        last-update: Wed, 28 Aug 2024 12:24:58 IST
+        provider: minikube.sigs.k8s.io
+        version: v1.33.0
+      name: context_info
+    namespace: default
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: minikube
+  user:
+    client-certificate: /home/raamu/.minikube/profiles/minikube/client.crt
+    client-key: /home/raamu/.minikube/profiles/minikube/client.key
+raamu@raamu-VirtualBox:~$
+
+TO check teh access:
+
+raamu@raamu-VirtualBox:~$ kubectl auth can-i create pod
+yes
+raamu@raamu-VirtualBox:
+
+=======================================================----------------------==============================
+
+Day 22: kubernetes probes |HELM:
+
+i. Readiness probe:
+
+whenever we creating pod  and something specifying on the pod, the particular requirement should meet.
+          eg: for creating pod oif we specify the condition that this need ot create on a particular filesystem
+		      or directory and that should match the requirment then only pod would create.
+			  This is called Readiness probe.
+
+ii. Liveness probe:
+
+It will monitor the Readyness probe requirement that is it available or not and running or not.
+
+->IF wthe requirement of Readyness probe doesn't match Liveness Probe will through error and brings pod to pending state.
+
+Probe TypeS:
+------------
+
+1. Exec : general command, which should show the exit value 0
+2. httpGet : Response codes like web server   & 200-399 return code range, thien it is fine
+                                            --------
+											depending on this the Readiness & liveness probe run
+3. TCP Socket: for connectivity with the help if TCP port and shows the running status or not.
+
+=========================
+
+Monitoring:
+
+Generally we have monitoring tool (dashboard)
+
+But, for checking the cpu & RAM utilization
+  $kubectl top pod
+  
+  $kubectl top nodes
+  
+To check the Disk utilization:
+ -> Basically we can check at AWS GUI level
+     or  AWSCLI  --> at command level
+
+PCV and PV level Capacity usage:
+ 
+ 3rd party app command will be used (need to find)
+ 
+ 
+ Troubeshooting Stuck in Termination:************
+ ------------------------------------------
+ -> If anything stucks and we get terminating
+      eg: namespace struck terminating
+	  
+	 -> for this we need to bring the namespace to JSON format
+
+raamu@raamu-VirtualBox:~$ kubectl get namespace rnamespace -o json >tmp.json
+raamu@raamu-VirtualBox:~$
+
+remove finalizers and run:
+
+raamu@raamu-VirtualBox:~$ cat tmp.json
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "creationTimestamp": "2024-08-21T08:57:46Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "rnamespace"
+        },
+        "name": "rnamespace",
+        "resourceVersion": "43587",
+        "uid": "39669bac-abec-46da-9a77-17991d8dab7a"
+    },
+    "spec": {
+        "finalizers": [               ->>>>>>>>>>>>>>>>>>>>>.remove
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
+}
+raamu@raamu-VirtualBox:~$
+
+Troubeshooting Client Issues:************
+ ------------------------------------------
+ 
+-> Access issues we check through services ->(we check labels)
+-> check endpoints
+-> check the pod where srv are mapping
+-> If access, ask the client to recheck
+          like if it is not working then it definitely traffic Issue
+		  then ask the n/w team cehck teh packets.
+		  still no Issues at n/w, then their may be configuration issue at client end.
+
+============================
+HELM:
+
+Its a 3rd party tool which Helm Organization manages.
+whenever we install the application , the inatallations and application deployments will be strealined.
+
+what is streamline?
+ eg: In linux , if we want to install we use yum ->Redhat
+                                             apt-Ubuntu
+                                             ----------
+											 if any dependencies , these will be managed using yum and apt tools
+  Likewise, in k8's if we want to do any installation/manage application and if we want to make
+     clear dependencies then HELM will be used.
+                             -----
+                             works based on charts and so naming convention is HELM Chart or Helm Packages.
+
+HELM Chart or Helm Packages :
+
+It has all description of the package adn also we have templates. 
+                                                       ----------
+                                                       which are called manifest files
+                                                                        ---------
+																		where we will bring all dependencies files.
+																		
+where helm charts/packages will be stored?
+
+we mainly stores locally (/usr/local/bin/heml)
+
+How to install HELM:
+
+go to https://helm.sh/docs/intro/install/ and download zip file or tar file
+       if it is linux--->download the file Linuxi386 
+
+once installed in linux, 
+
+raamu@raamu-VirtualBox:~/Downloads$ sudo su
+[sudo] password for raamu:
+root@raamu-VirtualBox:/home/raamu/Downloads#
+root@raamu-VirtualBox:/home/raamu/Downloads#
+root@raamu-VirtualBox:/home/raamu/Downloads# chmod 777 /usr/local/bin/
+root@raamu-VirtualBox:/home/raamu/Downloads#
+root@raamu-VirtualBox:/home/raamu/Downloads# exit
+exit
+raamu@raamu-VirtualBox:~/Downloads$
+raamu@raamu-VirtualBox:~/Downloads$
+raamu@raamu-VirtualBox:~/Downloads$ mv linux-386/helm /usr/local/bin/
+mv: cannot stat 'linux-386/helm': No such file or directory
+raamu@raamu-VirtualBox:~/Downloads$ ls -ltr
+total 64152
+-rwxr-xr-x 1 raamu raamu 50327704 Jul 11 01:01 helm
+-rw-rw-r-- 1 raamu raamu 15351725 Aug 28 23:00 helm-v3.15.3-linux-386.tar.gz
+-rw-rw-r-- 1 raamu raamu       96 Aug 28 23:00 helm-v3.15.3-linux-386.tar.gz.sha256sum
+drwxr-xr-x 2 raamu raamu     4096 Aug 28 23:06 linux-386
+raamu@raamu-VirtualBox:~/Downloads$ mv helm /usr/local/bin/
+raamu@raamu-VirtualBox:~/Downloads$ cd /usr/local/bin/
+raamu@raamu-VirtualBox:/usr/local/bin$ ls -ltr
+total 192804
+-rwxrwxr-x 1 raamu raamu 51454104 May  5 17:22 kubectl
+-rwxr-xr-x 1 root  root  95637096 May  5 17:23 minikube
+-rwxr-xr-x 1 raamu raamu 50327704 Jul 11 01:01 helm
+raamu@raamu-VirtualBox:/usr/local/bin$
+
+
+all charts available from artifacthub.io
+
+https://artifacthub.io/ --> all packages will avaiable
+
+eg: searh here any tool like kafka,jenkins,mariadb and etc.
+
+
+To deploy anything form helm:
+
+1. first we need to add helm repo first
+
+raamu@raamu-VirtualBox:~$ helm repo list
+Error: no repositories to show
+raamu@raamu-VirtualBox:~$
+
+raamu@raamu-VirtualBox:~$ helm repo add my-repo https://charts.bitnami.com/bitnami
+"my-repo" has been added to your repositories
+raamu@raamu-VirtualBox:~$ helm repo list
+NAME    URL
+my-repo https://charts.bitnami.com/bitnami
+raamu@raamu-VirtualBox:~$
+
+gives latest udpated files:
+
+raamu@raamu-VirtualBox:~$ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "my-repo" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+
+raamu@raamu-VirtualBox:~$ helm search repo bitnami
+NAME            CHART VERSION   APP VERSION     DESCRIPTION
+my-repo/common  2.22.0          2.22.0          A Library Helm Chart for grouping common logic ...
+my-repo/mxnet   3.5.2           1.9.1           DEPRECATED Apache MXNet (Incubating) is a flexi...
+my-repo/pytorch 4.2.13          2.4.0           PyTorch is a deep learning platform that accele...
+raamu@raamu-VirtualBox:~$
+
+If helm chart not installing go to artifacthub.io and 
+https://artifacthub.io/packages/helm/wso2/mysql
+-> search mysql ->install ->here we get add repo and install chart links
+
+raamu@raamu-VirtualBox:~$  helm repo add wso2 https://helm.wso2.com
+"wso2" has been added to your repositories
+
+raamu@raamu-VirtualBox:~$ helm install my-mysql wso2/mysql --version 1.6.9
+NAME: my-mysql
+LAST DEPLOYED: Sun Sep  1 17:01:43 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+MySQL can be accessed via port 3306 on the following DNS name from within your cluster:
+my-mysql.default.svc.cluster.local
+
+To get your root password run:
+
+    MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace default my-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo)
+
+To connect to your database:
+
+1. Run an Ubuntu pod that you can use as a client:
+
+    kubectl run -i --tty ubuntu --image=ubuntu:16.04 --restart=Never -- bash -il
+
+2. Install the mysql client:
+
+    $ apt-get update && apt-get install mysql-client -y
+
+3. Connect using the mysql cli, then provide your password:
+    $ mysql -h my-mysql -p
+
+To connect to your database directly from outside the K8s cluster:
+    MYSQL_HOST=127.0.0.1
+    MYSQL_PORT=3306
+
+    # Execute the following command to route the connection:
+    kubectl port-forward svc/my-mysql 3306
+
+    mysql -h ${MYSQL_HOST} -P${MYSQL_PORT} -u root -p${MYSQL_ROOT_PASSWORD}
+raamu@raamu-VirtualBox:~$
+
+raamu@raamu-VirtualBox:~$ helm show  all bitnami/mysql
+Error: repo bitnami not found
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$
+
+raamu@raamu-VirtualBox:~$ kubectl get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+my-mysql-7677c5496-72zdd   1/1     Running   0          8m35s
+
+
+helm install bitnami/mysql
+helm show chart bitnami/mysql (show s the deployed)
+helm list (shows what we ahve installed)
+	   
+	raamu@raamu-VirtualBox:/usr/local/bin$ helm list
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+my-mysql        default         1               2024-09-01 17:01:43.727637341 +0530 IST deployed        mysql-1.6.9     5.7.30
+raamu@raamu-VirtualBox:/usr/local/bin$
+
+raamu@raamu-VirtualBox:/usr/local/bin$ helm status my-mysql
+NAME: my-mysql
+LAST DEPLOYED: Sun Sep  1 17:01:43 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+MySQL can be accessed via port 3306 on the following DNS name from within your cluster:
+my-mysql.default.svc.cluster.local
+
+To get your root password run:
+
+    MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace default my-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo)
+
+To connect to your database:
+
+1. Run an Ubuntu pod that you can use as a client:
+
+    kubectl run -i --tty ubuntu --image=ubuntu:16.04 --restart=Never -- bash -il
+
+2. Install the mysql client:
+
+    $ apt-get update && apt-get install mysql-client -y
+
+3. Connect using the mysql cli, then provide your password:
+    $ mysql -h my-mysql -p
+
+To connect to your database directly from outside the K8s cluster:
+    MYSQL_HOST=127.0.0.1
+    MYSQL_PORT=3306
+
+    # Execute the following command to route the connection:
+    kubectl port-forward svc/my-mysql 3306
+
+    mysql -h ${MYSQL_HOST} -P${MYSQL_PORT} -u root -p${MYSQL_ROOT_PASSWORD}
+raamu@raamu-VirtualBox:/usr/local/bin$
+
+
+TO remove the mysql:
+
+raamu@raamu-VirtualBox:~$ helm list
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+my-mysql        default         1               2024-09-01 17:01:43.727637341 +0530 IST deployed        mysql-1.6.9     5.7.30
+raamu@raamu-VirtualBox:~$ helm delete my-mysql
+release "my-mysql" uninstalled
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$
+raamu@raamu-VirtualBox:~$ helm list
+NAME    NAMESPACE       REVISION        UPDATED STATUS  CHART   APP VERSION
+raamu@raamu-VirtualBox:~$
+
+
+
+
+=> we can customize the helm manifest files:
+
+to pull the required images:
+
+helm pull bitnami/nginx
+
+
+********HElm charts need to work on it***********
+
+
+==========================================================
+
+   
+
+
+DAy23: Kubernetes Kustomize | K8's Blue Green Deployment:
+
+In K8's feature, which uses directory/file with the file named 
+Kustomize.yaml
+--------------                                                                
+to customize any cahnges 																
+eg: if we have i.deployment & ii.services and if we want to deploy																
+     by using kustomize.yaml , we have resources option to deploy the kustomize.yaml																
+                                       ---------                                                                
+									   In this we by updating kustomize.yaml will deploy														
+									    resources:																
+										  - deployment.yaml																
+										  - service.yaml 																
+							
+							and another option is Name prefix:
+							                      ----------
+												   like if every deployment name we can update prefix name
+												    eg: kubectl create deploy nginx --image=nginx
+													    -> kubectl create deploy test-nginx --image=nginx
+													                        like nginx -> test-nginx 
+																			              prod-nginx
+																						  dev-nginx
+							and also we can mention the namespace like for particular objects to be placed:
+                                                   eg: namespace :test						
+                         
+                            and also labels, in kustomization we have CommonLables:
+                                                                        envtest:	
+        |-------------------------------|
+        |  overall:                     |
+        |    resources:			        |
+        |      - deployment.yaml	    |		  
+		|	  - service.yaml 			|																	  
+        |    namePrefix: rest-nginx     |
+		|	  namespace: rest           |
+		|	  commonLabels:             |
+		|	  env: test                 |
+        |------------------------------ |
+ -> If we ahve multiple deployments we use Overlays:
+ 
+-------------------------------------------------------------------------------------------- 
+ Single deployment Kustomization file:  | Multiple DEpolyments(OVERLAY) ->we use this if we need to deploy in all environment
+
+                                        |
+ vi Kustomize.yaml                      |  vi Kustimize.yaml
+                                        |   - base
+resources:			                    |   - deployment.yaml
+  - deployment.yaml	                    |   - servie.yaml
+  - service.yaml 		                |   - kustomize.yaml
+namePrefix: rest-nginx                  | - overlay
+ namespace: rest                        |   - dev
+ commonLabels:                          |   - kustomize.yaml
+      env: test                         |   - stage
+                                        |   - kustomize.yaml
+                                        |   - prod
+                                        |   - kustomize.yaml
+                                        |
+-------------------------------------------------------------------------------------------
+
+kustomization.yaml
+deployment.yaml
+service.yaml
+
+all above fiels should be available in one path.
+
+ $kubectl kustomize kustomization -> shows what are deploying
+ $kubectl apply -k . ( this will automatically picks and create)
+ 
+ $kubectl  delete -k . (to delete)
+
+ Kustimize is almost like HELM(we all ahve readymade products to deploy , where we can edit & make the changes)
+ ---------
+( All fiels need to create and bring to one path and execute) 
+
+=>Kustomozation is rerely used.
+=>HElm charts/packages are using 
+=>Now-a-days Operators are using  which is a 3rd party which we see in artifacthub.io
+
+
+======================================================================================
+
+Blue/Green Deployment: (Zero Downtime Deployment strategy)
+
+-> If we want to move from Version1[V1] -> version2[v2]
+                           -----------
+						   IT has its own resource services
+-> When we do new deployment V1 & V2 simultaneously runs and during this V1 related services we move gradually to V2.
+-> THis moving of services will move in secs or microsecs with the help of LABELS.
+-> Then after we can remove teh V1
+
+Blue  - is running application i.e v1 is existing
+Green - new application i.e v2 is need to create
+
+
+STATEFULSETS: (Daemonset, deployment & Statefulset are the same kind of deployments)
+
+MAin purpose of statefulset to provide presistent identity to the pods: 
+i.that means if we delete the pod and create the pod the name of the pod wont chahges
+ii. also attach to teh specific storage 
+iii. and also if we re-schedule /shuffle/deleting pod randomly also the pod name doesn't cahnges.
+
+and also created pod in ordering wise like one after one eg: p1, p2, p3...
+ In deployment, pods will be creating parallelly
+ 
+=> It has unique network identifiers, stable storage, ordering (deployment or scaling will create in ordering)
+
+=> It has special service callled Headless Service:
+                                  ----------------
+								  If we need to connect to specific server
+								   eg: In MYSEL< we have Master server(REad/write)
+								                              |________>synchronizing the data automatically
+                                                              |			(Headless service used for communicating b/w 2 servers												  
+								                              |
+													     Slave Server(Read)
+			-> Headless Services doesnt need any IP add,it works with DNS Values.
+            -> Statefulsets mostly used only for stateful applications like databases(mariadb,msql), messages(kafka,MQ,rabbating,activeMQ)
+               big data (Elastic Search , Spark)	
+            -> Stateful applications, means the data should be consistent.
+            ->whenever we delete the statfulsets, we need to delete storage, pvc,pvc
+            ->Headless services, compulsory need ot be created to provide application access to the users
+            -> while we doing scale down of pods , it it doesnt scale down properly.In statefulsets these pods will be hanged(termination state)	
+      Terminiation state: for this we need to do replicas=o , then delete 
+                                                 ----------
+                                                 edit deployment file and change.												 
+
+
+                           
+ ====================================================================
+
+
+Day24: Kubernetes CRD's(Custom Resources Definitions):
+
+Operatiors
+
+Statefulsets:
+
+whenever we create statefulset first need ot create service(without this service we cannot create statefulset)
+
+Senario:
+
+In ZooKeeper:
+
+3888 port as leader
+2888 port is slave
+
+2 services created
+i. Zk-hs :Headless service ->for internal communication (port number[3888,2888] should be open in pod)
+ii.Normal Services -> Zk-hs -> client service -> port 2181
+
+3. Statefulset: In this we mention the service first , we need to define service name
+
+4.Replicas :3
+
+Need ot get the excersice:
+
+==========================================
+
+Operators:
+
+Customized applications based on customer resource definition
+-> we are creating applications but for this we need CRD's behind this application creations
+
+-> How we run  package mange the applications, these all can be done through Operators.
+-> These Operators will run based on COntrollers called  Operator COntroller.
+                                                         -------------------
+														 these are k8's components and thse are dynamic systems, 
+														 like if we want to change/manage we can do through Operators.
+														 
+														 -> It always checks for desired & current states and it will adjusts to get the
+														    desired states.
+-> All applicaitons will run on operator specific controllers.
+-> In Opeshift, we can directly install this operator controller, where as in k8 , we need to download & Install.
+
+  $kubectl get pods -n kube-system.
+      ->shows the k8's related components like ETCD, Kube-API server, Kube-controller, Kube-proxy, kube-scheduler, storage provision.
+	  
+	
+Senario:1:
+
+Since we do not see any n/w related component
+ -> we try to install through Operator:
+  
+  $minikube stop
+  $minikube delete
+  
+ -> We are installing calico.
